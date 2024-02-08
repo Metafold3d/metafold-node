@@ -1,0 +1,7 @@
+.*
+src
+test
+examples
+public
+tsconfig.json
+tsconfig.cjs.json

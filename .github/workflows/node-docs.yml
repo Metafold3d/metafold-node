@@ -1,0 +1,30 @@
+---
+name: Node.js docs
+
+on:
+  workflow_run:
+    workflows: ["Node.js package"]
+    types: [completed]
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "21.x"
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - run: yarn docs
+      - name: Upload docs
+        uses: actions/upload-artifact@v4
+        with:
+          path: public/metafold/*
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: public/metafold/*/
+...

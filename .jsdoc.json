@@ -1,0 +1,9 @@
+{
+  "opts": {
+    "recurse": true,
+    "package": "package.json",
+    "readme": "README.md",
+    "template": "node_modules/minami",
+    "destination": "public"
+  }
+}
