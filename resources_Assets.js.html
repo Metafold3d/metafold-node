@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>resources/Assets.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Assets.html">Assets</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#create">create</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#download">download</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#downloadURL">downloadURL</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#list">list</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Jobs.html">Jobs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Jobs.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Jobs.html#list">list</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Jobs.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Jobs.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="MetafoldClient.html">MetafoldClient</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="PollTimeout.html">PollTimeout</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="User.html">User</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="User.html#license">license</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="User.html#quota">quota</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="User.html#usage">usage</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">resources/Assets.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable @typescript-eslint/no-var-requires */
+const axios = require("axios");
+const { constructParams } = require("../util");
+function asset(a) {
+    return {
+        ...a,
+        created: new Date(a.created),
+        modified: new Date(a.modified),
+    };
+}
+/** Metafold assets endpoint. */
+class Assets {
+    client;
+    constructor(client) {
+        this.client = client;
+    }
+    /**
+     * List assets.
+     *
+     * @param {Object} [params] - Optional list parameters.
+     * @param {string} [params.sort] - Sort string. For details on syntax see the Metafold API docs.
+     *   Supported sorting fields are: "id", "filename", "size", "created", or "modified".
+     * @param {string} [params.q] - Query string. For details on syntax see the Metafold API docs.
+     *   Supported search fields are: "id" and "filename".
+     * @returns List of asset resources.
+     */
+    async list({ sort, q } = {}) {
+        const params = constructParams({ sort, q });
+        const r = await this.client.get(`/projects/${this.client.projectID}/assets`, { params });
+        return r.data.map(asset);
+    }
+    /**
+     * Get an asset.
+     *
+     * @param {string} id - ID of asset to get.
+     * @returns Asset resource.
+     */
+    async get(id) {
+        const r = await this.client.get(`/projects/${this.client.projectID}/assets/${id}`);
+        return asset(r.data);
+    }
+    /**
+     * Download an asset.
+     *
+     * @param {string} id - ID of asset to download.
+     * @param {string} [responseType="stream"] - Type of response data.
+     *   Options include: "arraybuffer", "document", "json", "text", or "stream".
+     *   See {@link https://axios-http.com/docs/req_config|Axios docs} for details.
+     * @returns Response object with asset data.
+     */
+    // TODO: Add support for axios onDownloadProgress callback
+    async download(id, responseType = "stream") {
+        const params = { download: true };
+        const r = await this.client.get(`/projects/${this.client.projectID}/assets/${id}`, { params });
+        return await axios.get(r.data.link, { responseType });
+    }
+    /**
+     * Retrieve public asset download URL.
+     *
+     * @param {string} id - ID of asset to download.
+     * @param {Object} [params] - Optional download parameters.
+     * @param {string} [params.filename] - Filename of downloaded file.
+     * @returns {string} Asset download URL. Note the URL is only valid from one hour of generation.
+     */
+    async downloadURL(id, { filename } = {}) {
+        const params = constructParams({ download: true, filename });
+        const r = await this.client.get(`/projects/${this.client.projectID}/assets/${id}`, { params });
+        return r.data.link;
+    }
+    /**
+     * Upload an asset.
+     *
+     * @param {any} data - Asset data to upload, typically a File or Blob.
+     * @param {string} [filename] - Name of the file.
+     * @returns Asset resource.
+     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async create(data, filename) {
+        const form = new FormData();
+        if (filename) {
+            form.append("file", data, filename);
+        }
+        else {
+            form.append("file", data);
+        }
+        const r = await this.client.post(`/projects/${this.client.projectID}/assets`, form);
+        return asset(r.data);
+    }
+    /**
+     * Update an asset.
+     *
+     * @param {string} id - ID of asset to update.
+     * @param {any} data - Asset data to upload, typically a File or Blob.
+     * @param {string} [filename] - Name of the file.
+     * @returns Asset resource.
+     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async update(id, data, filename) {
+        const form = new FormData();
+        if (filename) {
+            form.append("file", data, filename);
+        }
+        else {
+            form.append("file", data);
+        }
+        const r = await this.client.patch(`/projects/${this.client.projectID}/assets/${id}`, form);
+        return asset(r.data);
+    }
+    /**
+     * Delete an asset.
+     *
+     * @param {string} id - ID of asset to delete.
+     */
+    async delete(id) {
+        await this.client.delete(`/projects/${this.client.projectID}/assets/${id}`);
+    }
+}
+module.exports = Assets;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed Feb 21 2024 12:20:17 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

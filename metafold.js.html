@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>metafold.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Assets.html">Assets</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#create">create</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#delete">delete</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#download">download</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#downloadURL">downloadURL</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#list">list</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Assets.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Jobs.html">Jobs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Jobs.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Jobs.html#list">list</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Jobs.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Jobs.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="MetafoldClient.html">MetafoldClient</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="PollTimeout.html">PollTimeout</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="User.html">User</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="User.html#license">license</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="User.html#quota">quota</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="User.html#usage">usage</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">metafold.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+/* eslint-disable @typescript-eslint/no-var-requires */
+const axios = require("axios");
+const Assets = require("./resources/Assets");
+const Jobs = require("./resources/Jobs");
+const User = require("./resources/User");
+/* eslint-enable @typescript-eslint/no-var-requires */
+const DEFAULT_BASE_URL = "https://api.metafold3d.com";
+/** Metafold REST API client. */
+class MetafoldClient {
+    projectID;
+    /**
+     * Endpoint for managing asset resources.
+     * @type {Assets}
+     */
+    assets;
+    /**
+     * Endpoint for managing job resources.
+     * @type {Jobs}
+     */
+    jobs;
+    /**
+     * Endpoint for querying user information.
+     * @type {User}
+     */
+    user;
+    /** Underlying HTTP client. */
+    axios;
+    get;
+    put;
+    post;
+    patch;
+    delete;
+    /**
+     * Create a client.
+     *
+     * @param {string} accessToken - Metafold API secret key.
+     * @param {string} projectID - ID of the project to make API calls against.
+     * @param {string} [baseURL] - Metafold API URL. Used for internal testing.
+     */
+    constructor(accessToken, projectID, baseURL = DEFAULT_BASE_URL) {
+        this.projectID = projectID;
+        this.axios = axios.create({
+            baseURL,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+            },
+        });
+        this.axios.interceptors.response.use((r) => r, (err) => {
+            if (err.response) {
+                const r = err.response;
+                // Error responses aren't entirely consistent in the Metafold API,
+                // for now we check for a handful of possible fields.
+                if (r.data.errors) {
+                    const msg = r.data.errors.map((e) => {
+                        if (e.field) {
+                            return `  [${e.field}] ${e.msg}`;
+                        }
+                        return `  ${e.msg}`;
+                    }).join("\n");
+                    return Promise.reject(new Error(`Bad request:\n${msg}`, { cause: err }));
+                }
+                const reason = r.data?.msg ?? r.data?.description;
+                return Promise.reject(new Error(`${reason ?? r.statusText}`, { cause: err }));
+            }
+            return Promise.reject(err);
+        });
+        this.get = this.axios.get;
+        this.put = this.axios.put;
+        this.post = this.axios.post;
+        this.patch = this.axios.patch;
+        this.delete = this.axios.delete;
+        this.assets = new Assets(this);
+        this.jobs = new Jobs(this);
+        this.user = new User(this);
+    }
+}
+module.exports = MetafoldClient;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed Feb 21 2024 12:20:17 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
