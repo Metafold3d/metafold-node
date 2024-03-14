@@ -108,14 +108,10 @@ class Jobs {
     name?: string,
     timeout: number = 1000 * 60 * 2, // 2 mins
   ): Promise<Job> {
-    const data = constructParams({ type, parameters: params, name })
-    let r: AxiosResponse = await this.client.post(
-      `/projects/${this.client.projectID}/jobs`, data, {
-        headers: { "Content-Type": "application/json" },
-      },
-    )
+    const url = await this.runStatus(type, params, name);
+    let r = null;
     try {
-      r = await this.poll(r.data.link, timeout)
+      r = await this.poll(url, timeout)
     } catch (e) {
       if (e instanceof PollTimeout) {
         throw new Error(
@@ -129,21 +125,37 @@ class Jobs {
     return job(r.data)
   }
 
+
   /**
-   * Update a job.
+   * Dispatch a new job and return immediately without waiting for result.
    *
-   * @param {string} id - ID of job to update.
-   * @param {Object} [params] - Optional update parameters.
-   * @param {string} [params.name] - New job name. The existing name remains unchanged if undefined.
-   * @returns Update job resource.
+   * See Metafold API docs for the full list of jobs.
+   *
+   * @param {string} type - Job type.
+   * @param {Object} params - Job parameters.
+   * @param {string} [name] - Job name.
+   * @returns {string} Job status url.
    */
-  async update(id: string, { name }: { name?: string } = {}): Promise<Job> {
-    const data = constructParams({ name })
-    const r = await this.client.patch(`/projects/${this.client.projectID}/jobs/${id}`, data)
-    return job(r.data)
+  async runStatus(type: string, params: object, name?: string): Promise<string> {
+    const data = constructParams({ type, parameters: params, name })
+    const r: AxiosResponse = await this.client.post(
+      `/projects/${this.client.projectID}/jobs`, data, {
+        headers: { "Content-Type": "application/json" },
+      },
+    )
+    return r.data.link;
   }
 
-  private poll(url: string, timeout: number): AxiosPromise {
+  /**
+   * Poll the given URL every one second.
+   *
+   * Helpful for waiting on job results given a status URL.
+   *
+   * @param {string} url - Job status url.
+   * @param {number} [timeout=12000] - Time in seconds to wait for a result.
+   * @returns Completed job resource.
+   */
+  poll(url: string, timeout: number = 1000 * 60 * 2): AxiosPromise {
     return new Promise((resolve, reject) => {
       /* eslint-disable prefer-const */
       let intervalID: Timeout
@@ -175,6 +187,20 @@ class Jobs {
         reject(new PollTimeout("Job timed out"))
       }, timeout)
     })
+  }
+
+  /**
+   * Update a job.
+   *
+   * @param {string} id - ID of job to update.
+   * @param {Object} [params] - Optional update parameters.
+   * @param {string} [params.name] - New job name. The existing name remains unchanged if undefined.
+   * @returns Update job resource.
+   */
+  async update(id: string, { name }: { name?: string } = {}): Promise<Job> {
+    const data = constructParams({ name })
+    const r = await this.client.patch(`/projects/${this.client.projectID}/jobs/${id}`, data)
+    return job(r.data)
   }
 }
 module.exports = Jobs

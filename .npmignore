@@ -5,3 +5,4 @@ examples
 public
 tsconfig.json
 tsconfig.cjs.json
+bundle.mjs

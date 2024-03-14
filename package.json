@@ -1,13 +1,17 @@
 {
   "name": "metafold",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Metafold SDK for Node.js",
   "main": "lib/metafold.js",
   "scripts": {
-    "build": "tsc && cp src/client.d.ts lib",
+    "build": "tsc",
+    "postbuild": "cp src/client.d.ts lib",
+    "prebundle": "yarn build",
+    "bundle": "node bundle.mjs",
     "lint": "eslint --ext '.ts' .",
     "test": "TS_NODE_PROJECT=tsconfig.cjs.json nyc mocha",
-    "docs": "yarn build && jsdoc -c .jsdoc.json lib"
+    "predocs": "yarn build",
+    "docs": "jsdoc -c .jsdoc.json lib"
   },
   "repository": {
     "type": "git",
@@ -31,6 +35,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "commander": "^12.0.0",
+    "esbuild": "^0.20.1",
     "eslint": "^8.56.0",
     "jsdoc": "^4.0.2",
     "minami": "^1.2.3",
