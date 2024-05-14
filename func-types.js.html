@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>resources/Jobs.js - Documentation</title>
+    <title>func-types.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,7 +29,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">resources/Jobs.js</h1>
+    <h1 class="page-title">func-types.js</h1>
     
 
     
@@ -39,147 +39,119 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { PollTimeout } from "../error.js";
-import { constructParams } from "../util.js";
-function job(j) {
-    return {
-        ...j,
-        created: new Date(j.created),
-        assets: j.assets.map((a) => ({
-            ...a,
-            created: new Date(a.created),
-            modified: new Date(a.modified),
-        }))
-    };
-}
-/** Metafold jobs endpoint. */
-export class Jobs {
-    client;
-    constructor(client) {
-        this.client = client;
+            <pre class="prettyprint source linenums"><code>export var FuncType;
+(function (FuncType) {
+    FuncType["Byte"] = "Byte";
+    FuncType["Int"] = "Int";
+    FuncType["Float"] = "Float";
+    FuncType["Vec2i"] = "Vec2i";
+    FuncType["Vec2f"] = "Vec2f";
+    FuncType["Vec3i"] = "Vec3i";
+    FuncType["Vec3f"] = "Vec3f";
+    FuncType["Vec4i"] = "Vec4i";
+    FuncType["Vec4f"] = "Vec4f";
+    FuncType["Mat2f"] = "Mat2f";
+    FuncType["Mat3f"] = "Mat3f";
+    FuncType["Mat4f"] = "Mat4f";
+})(FuncType || (FuncType = {}));
+const pointSourceVarType = "_PointSource";
+/**
+ * Instance of a function.
+ * Function instances may be composed with other functions to build shape graphs.
+ */
+export class Func {
+    type;
+    inputs;
+    parameters;
+    constructor(type, inputs, 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    parameters) {
+        this.type = type;
+        this.inputs = inputs;
+        this.parameters = parameters;
     }
     /**
-     * List jobs.
-     *
-     * @param {Object} [params] - Optional list parameters.
-     * @param {string} [params.sort] - Sort string. For details on syntax see the Metafold API docs.
-     *   Supported sorting fields are: "id", "name", or "created".
-     * @param {string} [params.q] - Query string. For details on syntax see the Metafold API docs.
-     *   Supported search fields are: "id", "name", "type", and "state".
-     * @returns List of job resources.
+     * Resolve function call tree to a Metafold shape graph.
      */
-    async list({ sort, q } = {}) {
-        const params = constructParams({ sort, q });
-        const r = await this.client.get(`/projects/${this.client.projectID}/jobs`, { params });
-        return r.data.map(job);
-    }
-    /**
-     * Get a job.
-     *
-     * @param {string} id - ID of job to get.
-     * @returns Job resource.
-     */
-    async get(id) {
-        const r = await this.client.get(`/projects/${this.client.projectID}/jobs/${id}`);
-        return job(r.data);
-    }
-    /**
-     * Dispatch a new job and wait for the result.
-     *
-     * See Metafold API docs for the full list of jobs.
-     *
-     * @param {string} type - Job type.
-     * @param {Object} params - Job parameters.
-     * @param {string} [name] - Job name.
-     * @param {number} [timeout=12000] - Time in seconds to wait for a result.
-     * @returns Completed job resource.
-     */
-    async run(type, params, name, timeout = 1000 * 60 * 2) {
-        const url = await this.runStatus(type, params, name);
-        let r = null;
-        try {
-            r = await this.poll(url, timeout);
+    json(points) {
+        if (this.type === pointSourceVarType) {
+            throw new Error("Failed to resolve point source");
         }
-        catch (e) {
-            if (e instanceof PollTimeout) {
-                throw new Error(`Job '${name ?? type}' failed to complete within ${timeout} ms`, { cause: e });
-            }
-            else {
-                throw e;
-            }
-        }
-        return job(r.data);
-    }
-    /**
-     * Dispatch a new job and return immediately without waiting for result.
-     *
-     * See Metafold API docs for the full list of jobs.
-     *
-     * @param {string} type - Job type.
-     * @param {Object} params - Job parameters.
-     * @param {string} [name] - Job name.
-     * @returns {string} Job status url.
-     */
-    async runStatus(type, params, name) {
-        const data = constructParams({ type, parameters: params, name });
-        const r = await this.client.post(`/projects/${this.client.projectID}/jobs`, data, {
-            headers: { "Content-Type": "application/json" },
-        });
-        return r.data.link;
-    }
-    /**
-     * Poll the given URL every one second.
-     *
-     * Helpful for waiting on job results given a status URL.
-     *
-     * @param {string} url - Job status url.
-     * @param {number} [timeout=12000] - Time in seconds to wait for a result.
-     * @returns Completed job resource.
-     */
-    poll(url, timeout = 1000 * 60 * 2) {
-        return new Promise((resolve, reject) => {
-            /* eslint-disable prefer-const */
-            let intervalID;
-            let timeoutID;
-            /* eslint-enable prefer-const */
-            const clearTimers = () => {
-                clearInterval(intervalID);
-                clearTimeout(timeoutID);
-            };
-            intervalID = setInterval(() => {
-                this.client.get(url)
-                    .then((r) => {
-                    if (r.status === 202) {
-                        return;
+        const dag = {
+            nodes: new Set(),
+            edges: new Map(),
+        };
+        const toVisit = [this];
+        while (toVisit.length > 0) {
+            const func = toVisit.pop();
+            if (dag.nodes.has(func))
+                continue;
+            dag.nodes.add(func);
+            for (const [name, source_] of Object.entries(func.inputs ?? {})) {
+                let source = source_;
+                if (source_.type === pointSourceVarType) {
+                    if (!points || points.type === pointSourceVarType) {
+                        throw new Error("Expected valid point source");
                     }
-                    clearTimers();
-                    resolve(r);
-                })
-                    .catch((e) => {
-                    clearTimers();
-                    reject(e);
+                    source = points;
+                }
+                toVisit.push(source);
+                if (!dag.edges.has(source))
+                    dag.edges.set(source, []);
+                dag.edges.get(source).push({ name, func });
+            }
+        }
+        // TODO(ryan): Sort graph in topological order so that edge indices make more sense
+        const indices = new Map();
+        const g = {
+            operators: [],
+            edges: [],
+        };
+        for (const func of dag.nodes.values()) {
+            const operator = { type: func.type };
+            if (func.parameters) {
+                operator.parameters = Object.fromEntries(Object.entries(func.parameters).map(([k, v]) => {
+                    // Convert three.js types to arrays
+                    if (typeof v === "object" &amp;&amp; "toArray" in v &amp;&amp; typeof v.toArray === "function")
+                        return [k, v.toArray()];
+                    return [k, v];
+                }));
+            }
+            const index = g.operators.push(operator) - 1;
+            indices.set(func, index);
+        }
+        for (const [source, targets] of Array.from(dag.edges.entries())) {
+            const sourceIndex = indices.get(source);
+            for (const { func, name: targetName } of targets) {
+                const targetIndex = indices.get(func);
+                g.edges.push({
+                    source: sourceIndex,
+                    target: [targetIndex, targetName],
                 });
-            }, 1000);
-            timeoutID = setTimeout(() => {
-                clearInterval(intervalID);
-                reject(new PollTimeout("Job timed out"));
-            }, timeout);
-        });
-    }
-    /**
-     * Update a job.
-     *
-     * @param {string} id - ID of job to update.
-     * @param {Object} [params] - Optional update parameters.
-     * @param {string} [params.name] - New job name. The existing name remains unchanged if undefined.
-     * @returns Update job resource.
-     */
-    async update(id, { name } = {}) {
-        const data = constructParams({ name });
-        const r = await this.client.patch(`/projects/${this.client.projectID}/jobs/${id}`, data);
-        return job(r.data);
+            }
+        }
+        return g;
     }
 }
+/** Typed instance of a function to enable type checking for function compositions. */
+export class TypedFunc extends Func {
+    returnType;
+    constructor(type, inputs, 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    parameters, 
+    // Generic parameters are erased unless they are used in the type
+    returnType) {
+        super(type, inputs, parameters);
+        this.returnType = returnType;
+    }
+}
+/**
+ * Dummy point source.
+ * May be used in place of the (primary) point source for an operator to defer provision of a point
+ * source until graph resolution. This allows you to re-use a function composition with different
+ * point sources.
+ */
+export const POINT_SOURCE = new TypedFunc(pointSourceVarType);
 </code></pre>
         </article>
     </section>

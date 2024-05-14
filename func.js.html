@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>resources/Jobs.js - Documentation</title>
+    <title>func.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,7 +29,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">resources/Jobs.js</h1>
+    <h1 class="page-title">func.js</h1>
     
 
     
@@ -39,146 +39,209 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { PollTimeout } from "../error.js";
-import { constructParams } from "../util.js";
-function job(j) {
-    return {
-        ...j,
-        created: new Date(j.created),
-        assets: j.assets.map((a) => ({
-            ...a,
-            created: new Date(a.created),
-            modified: new Date(a.modified),
-        }))
-    };
+            <pre class="prettyprint source linenums"><code>/* eslint-enable @typescript-eslint/no-unused-vars */
+import { Func, FuncType, TypedFunc, POINT_SOURCE, } from "./func-types.js";
+/** Compose function call to CSG. */
+export function CSG(a, b, parameters) {
+    return new TypedFunc("CSG", {
+        "A": a,
+        "B": b,
+    }, parameters, FuncType.Float);
 }
-/** Metafold jobs endpoint. */
-export class Jobs {
-    client;
-    constructor(client) {
-        this.client = client;
+/** Compose function call to ComputeNormals. */
+export function ComputeNormals(points = POINT_SOURCE, volume, parameters) {
+    return new TypedFunc("ComputeNormals", {
+        "Points": points,
+        "Volume": volume,
+    }, parameters, FuncType.Vec3f);
+}
+/** Compose function call to GenerateSamplePoints. */
+export function GenerateSamplePoints(parameters) {
+    return new TypedFunc("GenerateSamplePoints", undefined, parameters, FuncType.Vec3f);
+}
+/** Compose function call to GradeCellSize. */
+export function GradeCellSize(points = POINT_SOURCE, parameters) {
+    return new TypedFunc("GradeCellSize", {
+        "Points": points,
+    }, parameters, FuncType.Vec3f);
+}
+/** Compose function call to InterpolateBoundaryCoords. */
+export function InterpolateBoundaryCoords(points = POINT_SOURCE, boundary_data, mesh_data, parameters) {
+    return new TypedFunc("InterpolateBoundaryCoords", {
+        "Points": points,
+    }, parameters, FuncType.Vec3f);
+}
+/** Compose function call to LinearFilter. */
+export function LinearFilter(inputa, inputb, parameters) {
+    return new TypedFunc("LinearFilter", {
+        "InputA": inputa,
+        "InputB": inputb,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to LoadSamplePoints. */
+export function LoadSamplePoints(parameters) {
+    return new TypedFunc("LoadSamplePoints", undefined, parameters, FuncType.Vec3f);
+}
+/** Compose function call to LoadVolume. */
+export function LoadVolume(volume_data, parameters) {
+    return new Func("LoadVolume", undefined, parameters);
+}
+/** Compose function call to MapTexturePrimitive. */
+export function MapTexturePrimitive(points = POINT_SOURCE, image, parameters) {
+    return new TypedFunc("MapTexturePrimitive", {
+        "Points": points,
+        "Image": image,
+    }, parameters, FuncType.Vec3f);
+}
+/** Compose function call to Redistance. */
+export function Redistance(samples, parameters) {
+    return new TypedFunc("Redistance", {
+        "Samples": samples,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to SampleBeam. */
+export function SampleBeam(points = POINT_SOURCE, bvh_data, network_data, parameters) {
+    return new TypedFunc("SampleBeam", {
+        "Points": points,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to SampleBox. */
+export function SampleBox(points = POINT_SOURCE, parameters) {
+    return new TypedFunc("SampleBox", {
+        "Points": points,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to SampleCustomShape. */
+export function SampleCustomShape(points = POINT_SOURCE, shader_data, parameters) {
+    return new TypedFunc("SampleCustomShape", {
+        "Points": points,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to SampleLattice. */
+export function SampleLattice(points = POINT_SOURCE, parameters) {
+    return new TypedFunc("SampleLattice", {
+        "Points": points,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to SampleSurfaceLattice. */
+export function SampleSurfaceLattice(points = POINT_SOURCE, parameters) {
+    return new TypedFunc("SampleSurfaceLattice", {
+        "Points": points,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to SampleTriangleMesh. */
+export function SampleTriangleMesh(points = POINT_SOURCE, mesh_data, parameters) {
+    return new TypedFunc("SampleTriangleMesh", {
+        "Points": points,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to SampleVolume. */
+export function SampleVolume(points = POINT_SOURCE, volume, parameters) {
+    return new Func("SampleVolume", {
+        "Points": points,
+        "Volume": volume,
+    }, parameters);
+}
+/** Compose function call to Shell. */
+export function Shell(samples, parameters) {
+    return new TypedFunc("Shell", {
+        "Samples": samples,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to Threshold. */
+export function Threshold(samples, parameters) {
+    return new TypedFunc("Threshold", {
+        "Samples": samples,
+    }, parameters, FuncType.Float);
+}
+/** Compose function call to TransformCylindricalCoords. */
+export function TransformCylindricalCoords(points = POINT_SOURCE, parameters) {
+    return new TypedFunc("TransformCylindricalCoords", {
+        "Points": points,
+    }, parameters, FuncType.Vec3f);
+}
+/** Compose function call to TransformMirrorCoords. */
+export function TransformMirrorCoords(points = POINT_SOURCE, parameters) {
+    return new TypedFunc("TransformMirrorCoords", {
+        "Points": points,
+    }, parameters, FuncType.Vec3f);
+}
+/** Compose function call to TransformSphericalCoords. */
+export function TransformSphericalCoords(points = POINT_SOURCE, parameters) {
+    return new TypedFunc("TransformSphericalCoords", {
+        "Points": points,
+    }, parameters, FuncType.Vec3f);
+}
+/** Compose function call to TransformTwistCoords. */
+export function TransformTwistCoords(points = POINT_SOURCE, parameters) {
+    return new TypedFunc("TransformTwistCoords", {
+        "Points": points,
+    }, parameters, FuncType.Vec3f);
+}
+/*
+ * ----------------------------------------------------------------------------
+ * Handwritten utility functions
+ * ----------------------------------------------------------------------------
+ */
+/** Helper to generate the SDF for a Box primitive. */
+export function BoxPrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Box" });
+}
+/** Helper to generate the SDF for a Cylinder primitive. */
+export function CylinderPrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Cylinder" });
+}
+/** Helper to generate the SDF for a Torus primitive. */
+export function TorusPrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Torus" });
+}
+/** Helper to generate the SDF for a Link primitive. */
+export function LinkPrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Link" });
+}
+/** Helper to generate the SDF for a CappedCone primitive. */
+export function CappedConePrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "CappedCone" });
+}
+/** Helper to generate the SDF for a Ellipsoid primitive. */
+export function EllipsoidPrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Ellipsoid" });
+}
+/** Helper to generate the SDF for a Capsule primitive. */
+export function CapsulePrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Capsule" });
+}
+/** Helper to generate the SDF for a BoxFrame primitive. */
+export function BoxFramePrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "BoxFrame" });
+}
+/** Helper to generate the SDF for a Plane primitive. */
+export function PlanePrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Plane" });
+}
+/** Helper to subtract two SDFs. */
+export function CSGSubtract(a, b, smoothing) {
+    const params = { operation: "Subtract" };
+    if (smoothing) {
+        params.smoothing = smoothing;
     }
-    /**
-     * List jobs.
-     *
-     * @param {Object} [params] - Optional list parameters.
-     * @param {string} [params.sort] - Sort string. For details on syntax see the Metafold API docs.
-     *   Supported sorting fields are: "id", "name", or "created".
-     * @param {string} [params.q] - Query string. For details on syntax see the Metafold API docs.
-     *   Supported search fields are: "id", "name", "type", and "state".
-     * @returns List of job resources.
-     */
-    async list({ sort, q } = {}) {
-        const params = constructParams({ sort, q });
-        const r = await this.client.get(`/projects/${this.client.projectID}/jobs`, { params });
-        return r.data.map(job);
+    return CSG(a, b, params);
+}
+/** Helper to union two SDFs. */
+export function CSGUnion(a, b, smoothing) {
+    const params = { operation: "Union" };
+    if (smoothing) {
+        params.smoothing = smoothing;
     }
-    /**
-     * Get a job.
-     *
-     * @param {string} id - ID of job to get.
-     * @returns Job resource.
-     */
-    async get(id) {
-        const r = await this.client.get(`/projects/${this.client.projectID}/jobs/${id}`);
-        return job(r.data);
+    return CSG(a, b, params);
+}
+/** Helper to intersect two SDFs. */
+export function CSGIntersect(a, b, smoothing) {
+    const params = { operation: "Intersect" };
+    if (smoothing) {
+        params.smoothing = smoothing;
     }
-    /**
-     * Dispatch a new job and wait for the result.
-     *
-     * See Metafold API docs for the full list of jobs.
-     *
-     * @param {string} type - Job type.
-     * @param {Object} params - Job parameters.
-     * @param {string} [name] - Job name.
-     * @param {number} [timeout=12000] - Time in seconds to wait for a result.
-     * @returns Completed job resource.
-     */
-    async run(type, params, name, timeout = 1000 * 60 * 2) {
-        const url = await this.runStatus(type, params, name);
-        let r = null;
-        try {
-            r = await this.poll(url, timeout);
-        }
-        catch (e) {
-            if (e instanceof PollTimeout) {
-                throw new Error(`Job '${name ?? type}' failed to complete within ${timeout} ms`, { cause: e });
-            }
-            else {
-                throw e;
-            }
-        }
-        return job(r.data);
-    }
-    /**
-     * Dispatch a new job and return immediately without waiting for result.
-     *
-     * See Metafold API docs for the full list of jobs.
-     *
-     * @param {string} type - Job type.
-     * @param {Object} params - Job parameters.
-     * @param {string} [name] - Job name.
-     * @returns {string} Job status url.
-     */
-    async runStatus(type, params, name) {
-        const data = constructParams({ type, parameters: params, name });
-        const r = await this.client.post(`/projects/${this.client.projectID}/jobs`, data, {
-            headers: { "Content-Type": "application/json" },
-        });
-        return r.data.link;
-    }
-    /**
-     * Poll the given URL every one second.
-     *
-     * Helpful for waiting on job results given a status URL.
-     *
-     * @param {string} url - Job status url.
-     * @param {number} [timeout=12000] - Time in seconds to wait for a result.
-     * @returns Completed job resource.
-     */
-    poll(url, timeout = 1000 * 60 * 2) {
-        return new Promise((resolve, reject) => {
-            /* eslint-disable prefer-const */
-            let intervalID;
-            let timeoutID;
-            /* eslint-enable prefer-const */
-            const clearTimers = () => {
-                clearInterval(intervalID);
-                clearTimeout(timeoutID);
-            };
-            intervalID = setInterval(() => {
-                this.client.get(url)
-                    .then((r) => {
-                    if (r.status === 202) {
-                        return;
-                    }
-                    clearTimers();
-                    resolve(r);
-                })
-                    .catch((e) => {
-                    clearTimers();
-                    reject(e);
-                });
-            }, 1000);
-            timeoutID = setTimeout(() => {
-                clearInterval(intervalID);
-                reject(new PollTimeout("Job timed out"));
-            }, timeout);
-        });
-    }
-    /**
-     * Update a job.
-     *
-     * @param {string} id - ID of job to update.
-     * @param {Object} [params] - Optional update parameters.
-     * @param {string} [params.name] - New job name. The existing name remains unchanged if undefined.
-     * @returns Update job resource.
-     */
-    async update(id, { name } = {}) {
-        const data = constructParams({ name });
-        const r = await this.client.patch(`/projects/${this.client.projectID}/jobs/${id}`, data);
-        return job(r.data);
-    }
+    return CSG(a, b, params);
 }
 </code></pre>
         </article>

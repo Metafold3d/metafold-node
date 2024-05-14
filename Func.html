@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>resources/Jobs.js - Documentation</title>
+    <title>Func - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,160 +29,228 @@
 
 <div id="main">
     
-    <h1 class="page-title">resources/Jobs.js</h1>
+    <h1 class="page-title">Func</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { PollTimeout } from "../error.js";
-import { constructParams } from "../util.js";
-function job(j) {
-    return {
-        ...j,
-        created: new Date(j.created),
-        assets: j.assets.map((a) => ({
-            ...a,
-            created: new Date(a.created),
-            modified: new Date(a.modified),
-        }))
-    };
-}
-/** Metafold jobs endpoint. */
-export class Jobs {
-    client;
-    constructor(client) {
-        this.client = client;
-    }
-    /**
-     * List jobs.
-     *
-     * @param {Object} [params] - Optional list parameters.
-     * @param {string} [params.sort] - Sort string. For details on syntax see the Metafold API docs.
-     *   Supported sorting fields are: "id", "name", or "created".
-     * @param {string} [params.q] - Query string. For details on syntax see the Metafold API docs.
-     *   Supported search fields are: "id", "name", "type", and "state".
-     * @returns List of job resources.
-     */
-    async list({ sort, q } = {}) {
-        const params = constructParams({ sort, q });
-        const r = await this.client.get(`/projects/${this.client.projectID}/jobs`, { params });
-        return r.data.map(job);
-    }
-    /**
-     * Get a job.
-     *
-     * @param {string} id - ID of job to get.
-     * @returns Job resource.
-     */
-    async get(id) {
-        const r = await this.client.get(`/projects/${this.client.projectID}/jobs/${id}`);
-        return job(r.data);
-    }
-    /**
-     * Dispatch a new job and wait for the result.
-     *
-     * See Metafold API docs for the full list of jobs.
-     *
-     * @param {string} type - Job type.
-     * @param {Object} params - Job parameters.
-     * @param {string} [name] - Job name.
-     * @param {number} [timeout=12000] - Time in seconds to wait for a result.
-     * @returns Completed job resource.
-     */
-    async run(type, params, name, timeout = 1000 * 60 * 2) {
-        const url = await this.runStatus(type, params, name);
-        let r = null;
-        try {
-            r = await this.poll(url, timeout);
-        }
-        catch (e) {
-            if (e instanceof PollTimeout) {
-                throw new Error(`Job '${name ?? type}' failed to complete within ${timeout} ms`, { cause: e });
-            }
-            else {
-                throw e;
-            }
-        }
-        return job(r.data);
-    }
-    /**
-     * Dispatch a new job and return immediately without waiting for result.
-     *
-     * See Metafold API docs for the full list of jobs.
-     *
-     * @param {string} type - Job type.
-     * @param {Object} params - Job parameters.
-     * @param {string} [name] - Job name.
-     * @returns {string} Job status url.
-     */
-    async runStatus(type, params, name) {
-        const data = constructParams({ type, parameters: params, name });
-        const r = await this.client.post(`/projects/${this.client.projectID}/jobs`, data, {
-            headers: { "Content-Type": "application/json" },
-        });
-        return r.data.link;
-    }
-    /**
-     * Poll the given URL every one second.
-     *
-     * Helpful for waiting on job results given a status URL.
-     *
-     * @param {string} url - Job status url.
-     * @param {number} [timeout=12000] - Time in seconds to wait for a result.
-     * @returns Completed job resource.
-     */
-    poll(url, timeout = 1000 * 60 * 2) {
-        return new Promise((resolve, reject) => {
-            /* eslint-disable prefer-const */
-            let intervalID;
-            let timeoutID;
-            /* eslint-enable prefer-const */
-            const clearTimers = () => {
-                clearInterval(intervalID);
-                clearTimeout(timeoutID);
-            };
-            intervalID = setInterval(() => {
-                this.client.get(url)
-                    .then((r) => {
-                    if (r.status === 202) {
-                        return;
-                    }
-                    clearTimers();
-                    resolve(r);
-                })
-                    .catch((e) => {
-                    clearTimers();
-                    reject(e);
-                });
-            }, 1000);
-            timeoutID = setTimeout(() => {
-                clearInterval(intervalID);
-                reject(new PollTimeout("Job timed out"));
-            }, timeout);
-        });
-    }
-    /**
-     * Update a job.
-     *
-     * @param {string} id - ID of job to update.
-     * @param {Object} [params] - Optional update parameters.
-     * @param {string} [params.name] - New job name. The existing name remains unchanged if undefined.
-     * @returns Update job resource.
-     */
-    async update(id, { name } = {}) {
-        const data = constructParams({ name });
-        const r = await this.client.patch(`/projects/${this.client.projectID}/jobs/${id}`, data);
-        return job(r.data);
-    }
-}
-</code></pre>
-        </article>
-    </section>
+        <h2>
+        Func
+        </h2>
+        
+            <div class="class-description">Instance of a function.
+Function instances may be composed with other functions to build shape graphs.</div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+<div class="section-method">
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="Func"><span class="type-signature"></span>new Func<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="func-types.js.html">func-types.js</a>, <a href="func-types.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="Func.html">Func</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="json"><span class="type-signature"></span>json<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Resolve function call tree to a Metafold shape graph.
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="func-types.js.html">func-types.js</a>, <a href="func-types.js.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
