@@ -1,10 +1,8 @@
 import type { AxiosPromise, AxiosResponse } from "axios"
-import type { Asset, AssetJSON } from "./Assets"
-import type { Client } from "../client"
-/* eslint-disable @typescript-eslint/no-var-requires */
-const { PollTimeout } = require("../error")
-const { constructParams } = require("../util")
-/* eslint-enable @typescript-eslint/no-var-requires */
+import type { Asset, AssetJSON } from "./Assets.js"
+import type { Client } from "../client.js"
+import { PollTimeout } from "../error.js"
+import { constructParams } from "../util.js"
 
 type Timeout = ReturnType<typeof setTimeout>
 
@@ -60,7 +58,7 @@ export interface RunParams {
 }
 
 /** Metafold jobs endpoint. */
-class Jobs {
+export class Jobs {
   constructor(private client: Client) {
   }
 
@@ -169,7 +167,7 @@ class Jobs {
 
       intervalID = setInterval(() => {
         this.client.get(url)
-          .then((r) => {
+          .then((r: AxiosResponse) => {
             if (r.status === 202) {
               return
             }
@@ -203,4 +201,3 @@ class Jobs {
     return job(r.data)
   }
 }
-module.exports = Jobs

@@ -1,8 +1,8 @@
 import { strict as assert } from "assert"
 import fs from "fs"
 import nock from "nock"
-import { Asset, AssetJSON } from "./Assets"
-import MetafoldClient from "../metafold"
+import MetafoldClient from "../metafold.js"
+import type { Asset, AssetJSON } from "./Assets.js"
 
 const defaultDate = new Date("Mon, 01 Jan 2024 00:00:00 GMT")
 

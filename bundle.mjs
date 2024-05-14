@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild"
 
 await esbuild.build({
-  entryPoints: ["lib/metafold.js"],
+  entryPoints: ["src/metafold.ts"],
   format: "esm",
   bundle: true,
   minify: true,

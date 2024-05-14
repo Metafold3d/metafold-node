@@ -1,7 +1,7 @@
 import { strict as assert } from "assert"
 import nock from "nock"
-import { Quota, Usage } from "./User"
-import MetafoldClient from "../metafold"
+import MetafoldClient from "../metafold.js"
+import type { Quota, Usage } from "./User.js"
 
 const defaultDate = new Date("Mon, 01 Jan 2024 00:00:00 GMT")
 

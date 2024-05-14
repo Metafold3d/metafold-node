@@ -2,6 +2,9 @@
 
 [![npm](https://img.shields.io/npm/v/metafold.svg)](https://www.npmjs.org/package/metafold)
 
+> [!IMPORTANT]
+> Until the package is at major version one (1.x.x) the API should be considered unstable.
+
 ## Installation
 
 ```

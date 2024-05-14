@@ -1,0 +1,122 @@
+/*
+ * This file was automatically generated from the source file: func.ts.in.
+ * Any edits should be made to the template file before re-running the codegen:
+ */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import type {
+  Vec2i,
+  Vec2f,
+  Vec3i,
+  Vec3f,
+  Vec4i,
+  Vec4f,
+  Mat2f,
+  Mat3f,
+  Mat4f,
+  UnitCell,
+  VolumeAsset,
+  TriangleMeshAsset,
+  CustomShapeAsset,
+  ParametrizationAsset,
+  LineNetworkAsset,
+  LineNetworkBvhAsset,
+} from "./func-types.js"
+/* eslint-enable @typescript-eslint/no-unused-vars */
+import {
+  Func,
+  FuncType,
+  TypedFunc,
+  POINT_SOURCE,
+} from "./func-types.js"
+
+{{- range $type, $op := . }}
+{{- range $name, $param := $op.Params }}
+{{- if eq $param.Type.String "Enum" }}
+
+/** Enum variants for {{ $type }}.{{ $name }}. */
+export type {{ $type }}_Enum_{{ $name }} = {{ range $i, $var := $param.EnumVars -}}
+"{{ $var }}"
+{{- if lt $i (sub (len $param.EnumVars) 1) }} | {{ end }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+/** Optional parameters for the {{ $type }} operator. */
+export interface {{ $type }}_Parameters {
+{{- range $name, $param := $op.Params }}
+  {{ $name }}?: {{ parameterType $type $name $param }}
+{{- end }}
+}
+
+/** Compose function call to {{ $type }}. */
+export function {{ $type }}(
+{{- range $i, $input := $op.Inputs }}
+  {{ lower .Name }}
+{{- if eq $input.Type.String "Any" -}}
+: Func,
+{{- else -}}
+: TypedFunc<FuncType.{{ $input.Type.String }}>{{ if $input.Source }} = POINT_SOURCE{{ end }},
+{{- end }}
+{{- end }}
+{{- range $name, $asset := $op.Assets }}
+  {{ $name }}: {{ $asset.Type }}Asset,
+{{- end }}
+  parameters?: {{ $type }}_Parameters,
+)
+{{- if eq $op.Output.String "Any" -}}
+: Func {
+{{- else -}}
+: TypedFunc<FuncType.{{ $op.Output.String }}> {
+{{- end }}
+{{- if eq $op.Output.String "Any" }}
+  return new Func(
+{{- else }}
+  return new TypedFunc<FuncType.{{ $op.Output.String }}>(
+{{- end }}
+    "{{ $type }}",
+{{- if gt (len $op.Inputs) 0 }}
+    {
+{{- range $op.Inputs }}
+      "{{ .Name }}": {{ lower .Name }},
+{{- end }}
+    },
+{{- else }}
+    undefined,
+{{- end }}
+    parameters,
+{{- if ne $op.Output.String "Any" }}
+    FuncType.{{ $op.Output.String }},
+{{- end }}
+  )
+}
+{{- end }}
+
+/*
+ * ----------------------------------------------------------------------------
+ * Handwritten utility functions
+ * ----------------------------------------------------------------------------
+ */
+{{- range .SampleBox.Params.shape_type.EnumVars }}
+
+/** Helper to generate the SDF for a {{ . }} primitive. */
+export function {{ . }}Primitive(
+  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
+  parameters: Omit<SampleBox_Parameters, "shape_type">,
+): TypedFunc<FuncType.Float> {
+  return SampleBox(points, { ...parameters, shape_type: "{{ . }}" })
+}
+{{- end }}
+
+{{- range .CSG.Params.operation.EnumVars }}
+
+/** Helper to {{ . | lower }} two SDFs. */
+export function CSG{{ . }}(
+  a: TypedFunc<FuncType.Float>,
+  b: TypedFunc<FuncType.Float>,
+  smoothing?: number,
+): TypedFunc<FuncType.Float> {
+  const params: CSG_Parameters = { operation: "{{ . }}" }
+  if (smoothing) { params.smoothing = smoothing }
+  return CSG(a, b, params)
+}
+{{- end }}

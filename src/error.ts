@@ -1,5 +1,5 @@
 /** Error on job timeout. */
-class PollTimeout extends Error {
+export class PollTimeout extends Error {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(...params: any[]) {
     super(...params)
@@ -11,4 +11,3 @@ class PollTimeout extends Error {
     this.name = "PollTimeout"
   }
 }
-export = { PollTimeout }

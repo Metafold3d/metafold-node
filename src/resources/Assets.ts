@@ -1,9 +1,7 @@
+import axios from "axios"
 import type { AxiosPromise, ResponseType } from "axios"
-import type { Client } from "../client"
-/* eslint-disable @typescript-eslint/no-var-requires */
-const axios = require("axios")
-const { constructParams } = require("../util")
-/* eslint-enable @typescript-eslint/no-var-requires */
+import type { Client } from "../client.js"
+import { constructParams } from "../util.js"
 
 export type AssetJSON = {
   /** Asset ID. */
@@ -42,7 +40,7 @@ export interface ListParams {
 }
 
 /** Metafold assets endpoint. */
-class Assets {
+export class Assets {
   constructor(private client: Client) {
   }
 
@@ -151,4 +149,3 @@ class Assets {
     await this.client.delete(`/projects/${this.client.projectID}/assets/${id}`)
   }
 }
-module.exports = Assets

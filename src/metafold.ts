@@ -1,11 +1,9 @@
+import axios from "axios"
 import type { AxiosInstance } from "axios"
-import type { Client } from "./client"
-/* eslint-disable @typescript-eslint/no-var-requires */
-const axios = require("axios")
-const Assets = require("./resources/Assets")
-const Jobs = require("./resources/Jobs")
-const User = require("./resources/User")
-/* eslint-enable @typescript-eslint/no-var-requires */
+import type { Client } from "./client.js"
+import { Assets } from "./resources/Assets.js"
+import { Jobs } from "./resources/Jobs.js"
+import { User } from "./resources/User.js"
 
 const DEFAULT_BASE_URL = "https://api.metafold3d.com"
 
@@ -15,19 +13,19 @@ class MetafoldClient implements Client {
    * Endpoint for managing asset resources.
    * @type {Assets}
    */
-  assets: typeof Assets
+  assets: Assets
 
   /**
    * Endpoint for managing job resources.
    * @type {Jobs}
    */
-  jobs: typeof Jobs
+  jobs: Jobs
 
   /**
    * Endpoint for querying user information.
    * @type {User}
    */
-  user: typeof User
+  user: User
 
   /** Underlying HTTP client. */
   axios: AxiosInstance
@@ -87,4 +85,7 @@ class MetafoldClient implements Client {
     this.user = new User(this)
   }
 }
-export = MetafoldClient
+export default MetafoldClient
+
+export * from "./func.js"
+export * from "./func-types.js"

@@ -1,4 +1,4 @@
-import type { Client } from "../client"
+import type { Client } from "../client.js"
 
 export type LicenseJSON = {
   /** License issue (RFC 1123) datetime. */
@@ -39,7 +39,7 @@ export type Quota = {
 export type Usage = Quota
 
 /** Metafold user endpoint. */
-class User {
+export class User {
   constructor(private client: Client) {
   }
 
@@ -67,4 +67,3 @@ class User {
     return r.data
   }
 }
-module.exports = User

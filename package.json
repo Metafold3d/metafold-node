@@ -1,17 +1,23 @@
 {
   "name": "metafold",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Metafold SDK for Node.js",
   "main": "lib/metafold.js",
+  "type": "module",
   "scripts": {
-    "build": "tsc",
-    "postbuild": "cp src/client.d.ts lib",
-    "prebundle": "yarn build",
-    "bundle": "node bundle.mjs",
     "lint": "eslint --ext '.ts' .",
-    "test": "TS_NODE_PROJECT=tsconfig.cjs.json nyc mocha",
+    "build": "tsc",
+    "bundle": "tsc --noEmit && node bundle.mjs",
+    "test": "tsc -p tsconfig.test.json && mocha",
     "predocs": "yarn build",
     "docs": "jsdoc -c .jsdoc.json lib"
+  },
+  "mocha": {
+    "extension": [
+      "ts"
+    ],
+    "spec": "src/**/*.spec.ts",
+    "require": "tsx/esm"
   },
   "repository": {
     "type": "git",
@@ -41,12 +47,13 @@
     "minami": "^1.2.3",
     "mocha": "^10.2.0",
     "nock": "^13.5.1",
-    "nyc": "^15.1.0",
     "taffydb": "^2.7.3",
-    "ts-node": "^10.9.2",
+    "three": "^0.164.1",
+    "tsx": "^4.9.3",
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@types/three": "^0.164.0",
     "axios": "^1.6.7"
   }
 }
