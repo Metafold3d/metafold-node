@@ -46,29 +46,32 @@ export function CSG(a, b, parameters) {
     return new TypedFunc("CSG", {
         "A": a,
         "B": b,
-    }, parameters, FuncType.Float);
+    }, undefined, parameters, FuncType.Float);
 }
 /** Compose function call to ComputeNormals. */
 export function ComputeNormals(points = POINT_SOURCE, volume, parameters) {
     return new TypedFunc("ComputeNormals", {
         "Points": points,
         "Volume": volume,
-    }, parameters, FuncType.Vec3f);
+    }, undefined, parameters, FuncType.Vec3f);
 }
 /** Compose function call to GenerateSamplePoints. */
 export function GenerateSamplePoints(parameters) {
-    return new TypedFunc("GenerateSamplePoints", undefined, parameters, FuncType.Vec3f);
+    return new TypedFunc("GenerateSamplePoints", undefined, undefined, parameters, FuncType.Vec3f);
 }
 /** Compose function call to GradeCellSize. */
 export function GradeCellSize(points = POINT_SOURCE, parameters) {
     return new TypedFunc("GradeCellSize", {
         "Points": points,
-    }, parameters, FuncType.Vec3f);
+    }, undefined, parameters, FuncType.Vec3f);
 }
 /** Compose function call to InterpolateBoundaryCoords. */
 export function InterpolateBoundaryCoords(points = POINT_SOURCE, boundary_data, mesh_data, parameters) {
     return new TypedFunc("InterpolateBoundaryCoords", {
         "Points": points,
+    }, {
+        boundary_data,
+        mesh_data,
     }, parameters, FuncType.Vec3f);
 }
 /** Compose function call to LinearFilter. */
@@ -76,63 +79,72 @@ export function LinearFilter(inputa, inputb, parameters) {
     return new TypedFunc("LinearFilter", {
         "InputA": inputa,
         "InputB": inputb,
-    }, parameters, FuncType.Float);
+    }, undefined, parameters, FuncType.Float);
 }
 /** Compose function call to LoadSamplePoints. */
 export function LoadSamplePoints(parameters) {
-    return new TypedFunc("LoadSamplePoints", undefined, parameters, FuncType.Vec3f);
+    return new TypedFunc("LoadSamplePoints", undefined, undefined, parameters, FuncType.Vec3f);
 }
 /** Compose function call to LoadVolume. */
 export function LoadVolume(volume_data, parameters) {
-    return new Func("LoadVolume", undefined, parameters);
+    return new Func("LoadVolume", undefined, {
+        volume_data,
+    }, parameters);
 }
 /** Compose function call to MapTexturePrimitive. */
 export function MapTexturePrimitive(points = POINT_SOURCE, image, parameters) {
     return new TypedFunc("MapTexturePrimitive", {
         "Points": points,
         "Image": image,
-    }, parameters, FuncType.Vec3f);
+    }, undefined, parameters, FuncType.Vec3f);
 }
 /** Compose function call to Redistance. */
 export function Redistance(samples, parameters) {
     return new TypedFunc("Redistance", {
         "Samples": samples,
-    }, parameters, FuncType.Float);
+    }, undefined, parameters, FuncType.Float);
 }
 /** Compose function call to SampleBeam. */
 export function SampleBeam(points = POINT_SOURCE, bvh_data, network_data, parameters) {
     return new TypedFunc("SampleBeam", {
         "Points": points,
+    }, {
+        bvh_data,
+        network_data,
     }, parameters, FuncType.Float);
 }
 /** Compose function call to SampleBox. */
 export function SampleBox(points = POINT_SOURCE, parameters) {
     return new TypedFunc("SampleBox", {
         "Points": points,
-    }, parameters, FuncType.Float);
+    }, undefined, parameters, FuncType.Float);
 }
 /** Compose function call to SampleCustomShape. */
 export function SampleCustomShape(points = POINT_SOURCE, shader_data, parameters) {
     return new TypedFunc("SampleCustomShape", {
         "Points": points,
+    }, {
+        shader_data,
     }, parameters, FuncType.Float);
 }
 /** Compose function call to SampleLattice. */
 export function SampleLattice(points = POINT_SOURCE, parameters) {
     return new TypedFunc("SampleLattice", {
         "Points": points,
-    }, parameters, FuncType.Float);
+    }, undefined, parameters, FuncType.Float);
 }
 /** Compose function call to SampleSurfaceLattice. */
 export function SampleSurfaceLattice(points = POINT_SOURCE, parameters) {
     return new TypedFunc("SampleSurfaceLattice", {
         "Points": points,
-    }, parameters, FuncType.Float);
+    }, undefined, parameters, FuncType.Float);
 }
 /** Compose function call to SampleTriangleMesh. */
 export function SampleTriangleMesh(points = POINT_SOURCE, mesh_data, parameters) {
     return new TypedFunc("SampleTriangleMesh", {
         "Points": points,
+    }, {
+        mesh_data,
     }, parameters, FuncType.Float);
 }
 /** Compose function call to SampleVolume. */
@@ -140,43 +152,43 @@ export function SampleVolume(points = POINT_SOURCE, volume, parameters) {
     return new Func("SampleVolume", {
         "Points": points,
         "Volume": volume,
-    }, parameters);
+    }, undefined, parameters);
 }
 /** Compose function call to Shell. */
 export function Shell(samples, parameters) {
     return new TypedFunc("Shell", {
         "Samples": samples,
-    }, parameters, FuncType.Float);
+    }, undefined, parameters, FuncType.Float);
 }
 /** Compose function call to Threshold. */
 export function Threshold(samples, parameters) {
     return new TypedFunc("Threshold", {
         "Samples": samples,
-    }, parameters, FuncType.Byte);
+    }, undefined, parameters, FuncType.Byte);
 }
 /** Compose function call to TransformCylindricalCoords. */
 export function TransformCylindricalCoords(points = POINT_SOURCE, parameters) {
     return new TypedFunc("TransformCylindricalCoords", {
         "Points": points,
-    }, parameters, FuncType.Vec3f);
+    }, undefined, parameters, FuncType.Vec3f);
 }
 /** Compose function call to TransformMirrorCoords. */
 export function TransformMirrorCoords(points = POINT_SOURCE, parameters) {
     return new TypedFunc("TransformMirrorCoords", {
         "Points": points,
-    }, parameters, FuncType.Vec3f);
+    }, undefined, parameters, FuncType.Vec3f);
 }
 /** Compose function call to TransformSphericalCoords. */
 export function TransformSphericalCoords(points = POINT_SOURCE, parameters) {
     return new TypedFunc("TransformSphericalCoords", {
         "Points": points,
-    }, parameters, FuncType.Vec3f);
+    }, undefined, parameters, FuncType.Vec3f);
 }
 /** Compose function call to TransformTwistCoords. */
 export function TransformTwistCoords(points = POINT_SOURCE, parameters) {
     return new TypedFunc("TransformTwistCoords", {
         "Points": points,
-    }, parameters, FuncType.Vec3f);
+    }, undefined, parameters, FuncType.Vec3f);
 }
 /*
  * ----------------------------------------------------------------------------
@@ -186,14 +198,6 @@ export function TransformTwistCoords(points = POINT_SOURCE, parameters) {
 /** Helper to generate the SDF for a Cylinder primitive. */
 export function CylinderPrimitive(points = POINT_SOURCE, parameters) {
     return SampleBox(points, { ...parameters, shape_type: "Cylinder" });
-}
-/** Helper to generate the SDF for a BoxFrame primitive. */
-export function BoxFramePrimitive(points = POINT_SOURCE, parameters) {
-    return SampleBox(points, { ...parameters, shape_type: "BoxFrame" });
-}
-/** Helper to generate the SDF for a Plane primitive. */
-export function PlanePrimitive(points = POINT_SOURCE, parameters) {
-    return SampleBox(points, { ...parameters, shape_type: "Plane" });
 }
 /** Helper to generate the SDF for a Torus primitive. */
 export function TorusPrimitive(points = POINT_SOURCE, parameters) {
@@ -207,17 +211,33 @@ export function LinkPrimitive(points = POINT_SOURCE, parameters) {
 export function BoxPrimitive(points = POINT_SOURCE, parameters) {
     return SampleBox(points, { ...parameters, shape_type: "Box" });
 }
-/** Helper to generate the SDF for a Capsule primitive. */
-export function CapsulePrimitive(points = POINT_SOURCE, parameters) {
-    return SampleBox(points, { ...parameters, shape_type: "Capsule" });
+/** Helper to generate the SDF for a Ellipsoid primitive. */
+export function EllipsoidPrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Ellipsoid" });
+}
+/** Helper to generate the SDF for a Plane primitive. */
+export function PlanePrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Plane" });
 }
 /** Helper to generate the SDF for a CappedCone primitive. */
 export function CappedConePrimitive(points = POINT_SOURCE, parameters) {
     return SampleBox(points, { ...parameters, shape_type: "CappedCone" });
 }
-/** Helper to generate the SDF for a Ellipsoid primitive. */
-export function EllipsoidPrimitive(points = POINT_SOURCE, parameters) {
-    return SampleBox(points, { ...parameters, shape_type: "Ellipsoid" });
+/** Helper to generate the SDF for a Capsule primitive. */
+export function CapsulePrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "Capsule" });
+}
+/** Helper to generate the SDF for a BoxFrame primitive. */
+export function BoxFramePrimitive(points = POINT_SOURCE, parameters) {
+    return SampleBox(points, { ...parameters, shape_type: "BoxFrame" });
+}
+/** Helper to subtract two SDFs. */
+export function CSGSubtract(a, b, smoothing) {
+    const params = { operation: "Subtract" };
+    if (smoothing) {
+        params.smoothing = smoothing;
+    }
+    return CSG(a, b, params);
 }
 /** Helper to union two SDFs. */
 export function CSGUnion(a, b, smoothing) {
@@ -235,14 +255,6 @@ export function CSGIntersect(a, b, smoothing) {
     }
     return CSG(a, b, params);
 }
-/** Helper to subtract two SDFs. */
-export function CSGSubtract(a, b, smoothing) {
-    const params = { operation: "Subtract" };
-    if (smoothing) {
-        params.smoothing = smoothing;
-    }
-    return CSG(a, b, params);
-}
 </code></pre>
         </article>
     </section>
@@ -255,7 +267,7 @@ export function CSGSubtract(a, b, smoothing) {
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 11:13:18 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 16:05:30 GMT+0000 (Coordinated Universal Time) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
