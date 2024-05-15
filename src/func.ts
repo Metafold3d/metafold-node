@@ -30,7 +30,7 @@ import {
 } from "./func-types.js"
 
 /** Enum variants for CSG.operation. */
-export type CSG_Enum_operation = "Union" | "Intersect" | "Subtract"
+export type CSG_Enum_operation = "Subtract" | "Union" | "Intersect"
 
 /** Optional parameters for the CSG operator. */
 export interface CSG_Parameters {
@@ -50,6 +50,7 @@ export function CSG(
       "A": a,
       "B": b,
     },
+    undefined,
     parameters,
     FuncType.Float,
   )
@@ -74,6 +75,7 @@ export function ComputeNormals(
       "Points": points,
       "Volume": volume,
     },
+    undefined,
     parameters,
     FuncType.Vec3f,
   )
@@ -94,13 +96,14 @@ export function GenerateSamplePoints(
   return new TypedFunc<FuncType.Vec3f>(
     "GenerateSamplePoints",
     undefined,
+    undefined,
     parameters,
     FuncType.Vec3f,
   )
 }
 
 /** Enum variants for GradeCellSize.shape_type. */
-export type GradeCellSize_Enum_shape_type = "Cylinder" | "Box" | "Ellipsoid" | "Plane"
+export type GradeCellSize_Enum_shape_type = "Box" | "Ellipsoid" | "Plane" | "Cylinder"
 
 /** Optional parameters for the GradeCellSize operator. */
 export interface GradeCellSize_Parameters {
@@ -124,6 +127,7 @@ export function GradeCellSize(
     {
       "Points": points,
     },
+    undefined,
     parameters,
     FuncType.Vec3f,
   )
@@ -146,6 +150,10 @@ export function InterpolateBoundaryCoords(
     "InterpolateBoundaryCoords",
     {
       "Points": points,
+    },
+    {
+      boundary_data,
+      mesh_data,
     },
     parameters,
     FuncType.Vec3f,
@@ -170,6 +178,7 @@ export function LinearFilter(
       "InputA": inputa,
       "InputB": inputb,
     },
+    undefined,
     parameters,
     FuncType.Float,
   )
@@ -187,13 +196,14 @@ export function LoadSamplePoints(
   return new TypedFunc<FuncType.Vec3f>(
     "LoadSamplePoints",
     undefined,
+    undefined,
     parameters,
     FuncType.Vec3f,
   )
 }
 
 /** Enum variants for LoadVolume.component_type. */
-export type LoadVolume_Enum_component_type = "None" | "Byte" | "Float" | "Vec3f" | "Vec4i" | "Vec4f" | "Integer" | "Vec2i" | "Vec2f" | "Vec3i"
+export type LoadVolume_Enum_component_type = "Integer" | "Vec2f" | "Vec3i" | "Vec3f" | "Vec4i" | "None" | "Byte" | "Vec4f" | "Float" | "Vec2i"
 
 /** Optional parameters for the LoadVolume operator. */
 export interface LoadVolume_Parameters {
@@ -209,12 +219,15 @@ export function LoadVolume(
   return new Func(
     "LoadVolume",
     undefined,
+    {
+      volume_data,
+    },
     parameters,
   )
 }
 
 /** Enum variants for MapTexturePrimitive.shape_type. */
-export type MapTexturePrimitive_Enum_shape_type = "Cylinder" | "Box" | "Ellipsoid" | "Plane"
+export type MapTexturePrimitive_Enum_shape_type = "Box" | "Ellipsoid" | "Plane" | "Cylinder"
 
 /** Optional parameters for the MapTexturePrimitive operator. */
 export interface MapTexturePrimitive_Parameters {
@@ -237,6 +250,7 @@ export function MapTexturePrimitive(
       "Points": points,
       "Image": image,
     },
+    undefined,
     parameters,
     FuncType.Vec3f,
   )
@@ -258,13 +272,14 @@ export function Redistance(
     {
       "Samples": samples,
     },
+    undefined,
     parameters,
     FuncType.Float,
   )
 }
 
 /** Enum variants for SampleBeam.node_type. */
-export type SampleBeam_Enum_node_type = "Sphere" | "None"
+export type SampleBeam_Enum_node_type = "None" | "Sphere"
 
 /** Enum variants for SampleBeam.section_type. */
 export type SampleBeam_Enum_section_type = "Circle" | "Cross" | "Box"
@@ -291,13 +306,17 @@ export function SampleBeam(
     {
       "Points": points,
     },
+    {
+      bvh_data,
+      network_data,
+    },
     parameters,
     FuncType.Float,
   )
 }
 
 /** Enum variants for SampleBox.shape_type. */
-export type SampleBox_Enum_shape_type = "Cylinder" | "BoxFrame" | "Plane" | "Torus" | "Link" | "Box" | "Capsule" | "CappedCone" | "Ellipsoid"
+export type SampleBox_Enum_shape_type = "Cylinder" | "Torus" | "Link" | "Box" | "Ellipsoid" | "Plane" | "CappedCone" | "Capsule" | "BoxFrame"
 
 /** Optional parameters for the SampleBox operator. */
 export interface SampleBox_Parameters {
@@ -317,6 +336,7 @@ export function SampleBox(
     {
       "Points": points,
     },
+    undefined,
     parameters,
     FuncType.Float,
   )
@@ -337,6 +357,9 @@ export function SampleCustomShape(
     "SampleCustomShape",
     {
       "Points": points,
+    },
+    {
+      shader_data,
     },
     parameters,
     FuncType.Float,
@@ -375,13 +398,14 @@ export function SampleLattice(
     {
       "Points": points,
     },
+    undefined,
     parameters,
     FuncType.Float,
   )
 }
 
 /** Enum variants for SampleSurfaceLattice.lattice_type. */
-export type SampleSurfaceLattice_Enum_lattice_type = "CS" | "W" | "Y" | "SchwarzN" | "None" | "D" | "IWP" | "CP" | "SchwarzD" | "CI2Y" | "SchwarzW" | "SchwarzPW" | "C_Y" | "CPM_Y" | "Gyroid" | "I2Y" | "F" | "CY" | "CD" | "PM_Y" | "FRD" | "S" | "SD1" | "P" | "Schwarz"
+export type SampleSurfaceLattice_Enum_lattice_type = "I2Y" | "F" | "D" | "C_Y" | "CPM_Y" | "SchwarzN" | "Gyroid" | "SchwarzD" | "S" | "SD1" | "Schwarz" | "CP" | "CS" | "None" | "CY" | "Y" | "FRD" | "CI2Y" | "IWP" | "CD" | "W" | "PM_Y" | "SchwarzW" | "SchwarzPW" | "P"
 
 /** Optional parameters for the SampleSurfaceLattice operator. */
 export interface SampleSurfaceLattice_Parameters {
@@ -405,6 +429,7 @@ export function SampleSurfaceLattice(
     {
       "Points": points,
     },
+    undefined,
     parameters,
     FuncType.Float,
   )
@@ -426,6 +451,9 @@ export function SampleTriangleMesh(
     "SampleTriangleMesh",
     {
       "Points": points,
+    },
+    {
+      mesh_data,
     },
     parameters,
     FuncType.Float,
@@ -451,6 +479,7 @@ export function SampleVolume(
       "Points": points,
       "Volume": volume,
     },
+    undefined,
     parameters,
   )
 }
@@ -471,6 +500,7 @@ export function Shell(
     {
       "Samples": samples,
     },
+    undefined,
     parameters,
     FuncType.Float,
   )
@@ -491,6 +521,7 @@ export function Threshold(
     {
       "Samples": samples,
     },
+    undefined,
     parameters,
     FuncType.Byte,
   )
@@ -512,6 +543,7 @@ export function TransformCylindricalCoords(
     {
       "Points": points,
     },
+    undefined,
     parameters,
     FuncType.Vec3f,
   )
@@ -536,6 +568,7 @@ export function TransformMirrorCoords(
     {
       "Points": points,
     },
+    undefined,
     parameters,
     FuncType.Vec3f,
   )
@@ -556,13 +589,14 @@ export function TransformSphericalCoords(
     {
       "Points": points,
     },
+    undefined,
     parameters,
     FuncType.Vec3f,
   )
 }
 
 /** Enum variants for TransformTwistCoords.axis. */
-export type TransformTwistCoords_Enum_axis = "Y" | "Z" | "X"
+export type TransformTwistCoords_Enum_axis = "X" | "Y" | "Z"
 
 /** Optional parameters for the TransformTwistCoords operator. */
 export interface TransformTwistCoords_Parameters {
@@ -581,6 +615,7 @@ export function TransformTwistCoords(
     {
       "Points": points,
     },
+    undefined,
     parameters,
     FuncType.Vec3f,
   )
@@ -598,22 +633,6 @@ export function CylinderPrimitive(
   parameters: Omit<SampleBox_Parameters, "shape_type">,
 ): TypedFunc<FuncType.Float> {
   return SampleBox(points, { ...parameters, shape_type: "Cylinder" })
-}
-
-/** Helper to generate the SDF for a BoxFrame primitive. */
-export function BoxFramePrimitive(
-  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
-  parameters: Omit<SampleBox_Parameters, "shape_type">,
-): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "BoxFrame" })
-}
-
-/** Helper to generate the SDF for a Plane primitive. */
-export function PlanePrimitive(
-  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
-  parameters: Omit<SampleBox_Parameters, "shape_type">,
-): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "Plane" })
 }
 
 /** Helper to generate the SDF for a Torus primitive. */
@@ -640,12 +659,20 @@ export function BoxPrimitive(
   return SampleBox(points, { ...parameters, shape_type: "Box" })
 }
 
-/** Helper to generate the SDF for a Capsule primitive. */
-export function CapsulePrimitive(
+/** Helper to generate the SDF for a Ellipsoid primitive. */
+export function EllipsoidPrimitive(
   points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
   parameters: Omit<SampleBox_Parameters, "shape_type">,
 ): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "Capsule" })
+  return SampleBox(points, { ...parameters, shape_type: "Ellipsoid" })
+}
+
+/** Helper to generate the SDF for a Plane primitive. */
+export function PlanePrimitive(
+  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
+  parameters: Omit<SampleBox_Parameters, "shape_type">,
+): TypedFunc<FuncType.Float> {
+  return SampleBox(points, { ...parameters, shape_type: "Plane" })
 }
 
 /** Helper to generate the SDF for a CappedCone primitive. */
@@ -656,12 +683,31 @@ export function CappedConePrimitive(
   return SampleBox(points, { ...parameters, shape_type: "CappedCone" })
 }
 
-/** Helper to generate the SDF for a Ellipsoid primitive. */
-export function EllipsoidPrimitive(
+/** Helper to generate the SDF for a Capsule primitive. */
+export function CapsulePrimitive(
   points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
   parameters: Omit<SampleBox_Parameters, "shape_type">,
 ): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "Ellipsoid" })
+  return SampleBox(points, { ...parameters, shape_type: "Capsule" })
+}
+
+/** Helper to generate the SDF for a BoxFrame primitive. */
+export function BoxFramePrimitive(
+  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
+  parameters: Omit<SampleBox_Parameters, "shape_type">,
+): TypedFunc<FuncType.Float> {
+  return SampleBox(points, { ...parameters, shape_type: "BoxFrame" })
+}
+
+/** Helper to subtract two SDFs. */
+export function CSGSubtract(
+  a: TypedFunc<FuncType.Float>,
+  b: TypedFunc<FuncType.Float>,
+  smoothing?: number,
+): TypedFunc<FuncType.Float> {
+  const params: CSG_Parameters = { operation: "Subtract" }
+  if (smoothing) { params.smoothing = smoothing }
+  return CSG(a, b, params)
 }
 
 /** Helper to union two SDFs. */
@@ -682,17 +728,6 @@ export function CSGIntersect(
   smoothing?: number,
 ): TypedFunc<FuncType.Float> {
   const params: CSG_Parameters = { operation: "Intersect" }
-  if (smoothing) { params.smoothing = smoothing }
-  return CSG(a, b, params)
-}
-
-/** Helper to subtract two SDFs. */
-export function CSGSubtract(
-  a: TypedFunc<FuncType.Float>,
-  b: TypedFunc<FuncType.Float>,
-  smoothing?: number,
-): TypedFunc<FuncType.Float> {
-  const params: CSG_Parameters = { operation: "Subtract" }
   if (smoothing) { params.smoothing = smoothing }
   return CSG(a, b, params)
 }

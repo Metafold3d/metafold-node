@@ -71,7 +71,10 @@ export type LineNetworkBvhAsset = Asset
 export type Graph = {
   operators: {
     type: string
-    parameters?: object
+    parameters?: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      [key: string]: any
+    }
   }[]
   edges?: {
     source: number
@@ -89,8 +92,10 @@ export class Func {
   constructor(
     readonly type: string,
     readonly inputs?: { [key: string]: Func },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    readonly assets?: { [key: string]: any },
     readonly parameters?: { [key: string]: any },
+    /* eslint-enable @typescript-eslint/no-explicit-any */
   ) {}
 
   /**
@@ -159,6 +164,9 @@ export class Func {
           })
         )
       }
+      if (func.assets) {
+        operator.parameters = Object.assign(operator.parameters ?? {}, func.assets)
+      }
       const index = g.operators.push(operator) - 1
       indices.set(func, index)
     }
@@ -183,8 +191,10 @@ export class TypedFunc<T> extends Func {
   constructor(
     type: string,
     inputs?: { [key: string]: Func },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    parameters?: { [key: string]: any },
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    readonly assets?: { [key: string]: any },
+    readonly parameters?: { [key: string]: any },
+    /* eslint-enable @typescript-eslint/no-explicit-any */
     // Generic parameters are erased unless they are used in the type
     private returnType?: T,
   ) {

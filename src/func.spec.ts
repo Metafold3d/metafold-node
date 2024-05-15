@@ -7,12 +7,14 @@ import type {
 import {
   CSGIntersect,
   GenerateSamplePoints,
+  LoadVolume,
   Redistance,
   SampleBox,
   SampleSurfaceLattice,
+  SampleVolume,
   Threshold,
 } from "./func.js"
-import type { Graph } from "./func-types.js"
+import type { Graph, VolumeAsset } from "./func-types.js"
 import { POINT_SOURCE } from "./func-types.js"
 
 
@@ -100,6 +102,55 @@ describe("Func", function() {
         ),
       )
       assert.deepEqual(f.json(source), want)
+    })
+
+    it("should generate a valid shape graph with assets", function() {
+      const volumeAsset: VolumeAsset = {
+        file_type: "Raw",
+        path: "foo.bin",
+      }
+      const volume = LoadVolume(volumeAsset, { resolution: [64, 64, 64] })
+      const f = Threshold(
+        Redistance(
+          SampleVolume(source, volume, {
+            volume_size: [2, 2, 2],
+            volume_offset: [-1, -1, -1],
+          }),
+        ),
+      )
+      assert.deepEqual(f.json(), {
+        operators: [
+          { type: "Threshold" },
+          { type: "Redistance" },
+          {
+            type: "SampleVolume",
+            parameters: {
+              volume_size: [2, 2, 2],
+              volume_offset: [-1, -1, -1],
+            },
+          },
+          {
+            type: "LoadVolume",
+            parameters: {
+              volume_data: volumeAsset,
+              resolution: [64, 64, 64],
+            },
+          },
+          {
+            type: "GenerateSamplePoints",
+            parameters: {
+              size: [2, 2, 2],
+              resolution: [64, 64, 64],
+            },
+          },
+        ],
+        edges: [
+          { source: 1, target: [0, "Samples"] }, //           Redistance -> Threshold
+          { source: 2, target: [1, "Samples"] }, //         SampleVolume -> Redistance
+          { source: 4, target: [2, "Points"] },  // GenerateSamplePoints -> SampleVolume
+          { source: 3, target: [2, "Volume"] },  //           LoadVolume -> SampleVolume
+        ],
+      })
     })
   })
 })

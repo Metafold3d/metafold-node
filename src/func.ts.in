@@ -83,6 +83,15 @@ export function {{ $type }}(
 {{- else }}
     undefined,
 {{- end }}
+{{- if gt (len $op.Assets) 0 }}
+    {
+{{- range $name, $_ := $op.Assets }}
+      {{ $name }},
+{{- end }}
+    },
+{{- else }}
+    undefined,
+{{- end }}
     parameters,
 {{- if ne $op.Output.String "Any" }}
     FuncType.{{ $op.Output.String }},
