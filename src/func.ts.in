@@ -1,6 +1,6 @@
 /*
  * This file was automatically generated from the source file: func.ts.in.
- * Any edits should be made to the template file before re-running the codegen:
+ * Any edits should be made to the template file before re-running the codegen.
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {

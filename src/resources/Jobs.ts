@@ -52,11 +52,6 @@ export interface ListParams {
   q?: string
 }
 
-export interface RunParams {
-  name?: string
-  timeout: number
-}
-
 /** Metafold jobs endpoint. */
 export class Jobs {
   constructor(private client: Client) {
@@ -193,7 +188,7 @@ export class Jobs {
    * @param {string} id - ID of job to update.
    * @param {Object} [params] - Optional update parameters.
    * @param {string} [params.name] - New job name. The existing name remains unchanged if undefined.
-   * @returns Update job resource.
+   * @returns Updated job resource.
    */
   async update(id: string, { name }: { name?: string } = {}): Promise<Job> {
     const data = constructParams({ name })

@@ -1,7 +1,7 @@
 import type { AxiosInstance } from "axios"
 
 export interface Client {
-  projectID: string
+  projectID?: string
 
   get: AxiosInstance["get"]
   put: AxiosInstance["put"]

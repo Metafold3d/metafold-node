@@ -1,14 +1,20 @@
 import axios from "axios"
 import type { AxiosInstance } from "axios"
 import type { Client } from "./client.js"
+import { Projects } from "./resources/Projects.js"
 import { Assets } from "./resources/Assets.js"
 import { Jobs } from "./resources/Jobs.js"
-import { User } from "./resources/User.js"
 
 const DEFAULT_BASE_URL = "https://api.metafold3d.com"
 
 /** Metafold REST API client. */
 class MetafoldClient implements Client {
+  /**
+   * Endpoint for querying user information.
+   * @type {Projects}
+   */
+  projects: Projects
+
   /**
    * Endpoint for managing asset resources.
    * @type {Assets}
@@ -20,12 +26,6 @@ class MetafoldClient implements Client {
    * @type {Jobs}
    */
   jobs: Jobs
-
-  /**
-   * Endpoint for querying user information.
-   * @type {User}
-   */
-  user: User
 
   /** Underlying HTTP client. */
   axios: AxiosInstance
@@ -40,10 +40,10 @@ class MetafoldClient implements Client {
    * Create a client.
    *
    * @param {string} accessToken - Metafold API secret key.
-   * @param {string} projectID - ID of the project to make API calls against.
+   * @param {string} [projectID] - ID of the project to make API calls against.
    * @param {string} [baseURL] - Metafold API URL. Used for internal testing.
    */
-  constructor(accessToken: string, public projectID: string, baseURL: string = DEFAULT_BASE_URL) {
+  constructor(accessToken: string, public projectID?: string, baseURL: string = DEFAULT_BASE_URL) {
     this.axios = axios.create({
       baseURL,
       headers: {
@@ -80,9 +80,9 @@ class MetafoldClient implements Client {
     this.patch = this.axios.patch
     this.delete = this.axios.delete
 
+    this.projects = new Projects(this)
     this.assets = new Assets(this)
     this.jobs = new Jobs(this)
-    this.user = new User(this)
   }
 }
 export default MetafoldClient
