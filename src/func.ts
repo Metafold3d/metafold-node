@@ -1,6 +1,6 @@
 /*
  * This file was automatically generated from the source file: func.ts.in.
- * Any edits should be made to the template file before re-running the codegen:
+ * Any edits should be made to the template file before re-running the codegen.
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
@@ -30,7 +30,7 @@ import {
 } from "./func-types.js"
 
 /** Enum variants for CSG.operation. */
-export type CSG_Enum_operation = "Subtract" | "Union" | "Intersect"
+export type CSG_Enum_operation = "Intersect" | "Subtract" | "Union"
 
 /** Optional parameters for the CSG operator. */
 export interface CSG_Parameters {
@@ -103,7 +103,7 @@ export function GenerateSamplePoints(
 }
 
 /** Enum variants for GradeCellSize.shape_type. */
-export type GradeCellSize_Enum_shape_type = "Box" | "Ellipsoid" | "Plane" | "Cylinder"
+export type GradeCellSize_Enum_shape_type = "Box" | "Cylinder" | "Ellipsoid" | "Plane"
 
 /** Optional parameters for the GradeCellSize operator. */
 export interface GradeCellSize_Parameters {
@@ -203,7 +203,7 @@ export function LoadSamplePoints(
 }
 
 /** Enum variants for LoadVolume.component_type. */
-export type LoadVolume_Enum_component_type = "Integer" | "Vec2f" | "Vec3i" | "Vec3f" | "Vec4i" | "None" | "Byte" | "Vec4f" | "Float" | "Vec2i"
+export type LoadVolume_Enum_component_type = "Byte" | "Float" | "Integer" | "None" | "Vec2f" | "Vec2i" | "Vec3f" | "Vec3i" | "Vec4f" | "Vec4i"
 
 /** Optional parameters for the LoadVolume operator. */
 export interface LoadVolume_Parameters {
@@ -227,7 +227,7 @@ export function LoadVolume(
 }
 
 /** Enum variants for MapTexturePrimitive.shape_type. */
-export type MapTexturePrimitive_Enum_shape_type = "Box" | "Ellipsoid" | "Plane" | "Cylinder"
+export type MapTexturePrimitive_Enum_shape_type = "Box" | "Cylinder" | "Ellipsoid" | "Plane"
 
 /** Optional parameters for the MapTexturePrimitive operator. */
 export interface MapTexturePrimitive_Parameters {
@@ -282,7 +282,7 @@ export function Redistance(
 export type SampleBeam_Enum_node_type = "None" | "Sphere"
 
 /** Enum variants for SampleBeam.section_type. */
-export type SampleBeam_Enum_section_type = "Circle" | "Cross" | "Box"
+export type SampleBeam_Enum_section_type = "Box" | "Circle" | "Cross"
 
 /** Optional parameters for the SampleBeam operator. */
 export interface SampleBeam_Parameters {
@@ -316,7 +316,7 @@ export function SampleBeam(
 }
 
 /** Enum variants for SampleBox.shape_type. */
-export type SampleBox_Enum_shape_type = "Cylinder" | "Torus" | "Link" | "Box" | "Ellipsoid" | "Plane" | "CappedCone" | "Capsule" | "BoxFrame"
+export type SampleBox_Enum_shape_type = "Box" | "BoxFrame" | "CappedCone" | "Capsule" | "Cylinder" | "Ellipsoid" | "Link" | "Plane" | "Torus"
 
 /** Optional parameters for the SampleBox operator. */
 export interface SampleBox_Parameters {
@@ -370,7 +370,7 @@ export function SampleCustomShape(
 export type SampleLattice_Enum_node_type = "None" | "Sphere"
 
 /** Enum variants for SampleLattice.section_type. */
-export type SampleLattice_Enum_section_type = "Circle" | "Cross" | "Box"
+export type SampleLattice_Enum_section_type = "Box" | "Circle" | "Cross"
 
 /** Optional parameters for the SampleLattice operator. */
 export interface SampleLattice_Parameters {
@@ -405,7 +405,7 @@ export function SampleLattice(
 }
 
 /** Enum variants for SampleSurfaceLattice.lattice_type. */
-export type SampleSurfaceLattice_Enum_lattice_type = "I2Y" | "F" | "D" | "C_Y" | "CPM_Y" | "SchwarzN" | "Gyroid" | "SchwarzD" | "S" | "SD1" | "Schwarz" | "CP" | "CS" | "None" | "CY" | "Y" | "FRD" | "CI2Y" | "IWP" | "CD" | "W" | "PM_Y" | "SchwarzW" | "SchwarzPW" | "P"
+export type SampleSurfaceLattice_Enum_lattice_type = "CD" | "CI2Y" | "CP" | "CPM_Y" | "CS" | "CY" | "C_Y" | "D" | "F" | "FRD" | "Gyroid" | "I2Y" | "IWP" | "None" | "P" | "PM_Y" | "S" | "SD1" | "Schwarz" | "SchwarzD" | "SchwarzN" | "SchwarzPW" | "SchwarzW" | "W" | "Y"
 
 /** Optional parameters for the SampleSurfaceLattice operator. */
 export interface SampleSurfaceLattice_Parameters {
@@ -453,6 +453,32 @@ export function SampleTriangleMesh(
       "Points": points,
     },
     {
+      mesh_data,
+    },
+    parameters,
+    FuncType.Float,
+  )
+}
+
+/** Optional parameters for the SampleTriangleMeshBvh operator. */
+export interface SampleTriangleMeshBvh_Parameters {
+  xform?: Mat4f
+}
+
+/** Compose function call to SampleTriangleMeshBvh. */
+export function SampleTriangleMeshBvh(
+  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
+  bvh_data: MeshBvhAsset,
+  mesh_data: TriangleMeshAsset,
+  parameters?: SampleTriangleMeshBvh_Parameters,
+): TypedFunc<FuncType.Float> {
+  return new TypedFunc<FuncType.Float>(
+    "SampleTriangleMeshBvh",
+    {
+      "Points": points,
+    },
+    {
+      bvh_data,
       mesh_data,
     },
     parameters,
@@ -549,12 +575,10 @@ export function TransformCylindricalCoords(
   )
 }
 
-/** Enum variants for TransformMirrorCoords.normal. */
-export type TransformMirrorCoords_Enum_normal = "X" | "Y" | "Z"
-
 /** Optional parameters for the TransformMirrorCoords operator. */
 export interface TransformMirrorCoords_Parameters {
-  normal?: TransformMirrorCoords_Enum_normal
+  mirror_normal?: Vec3f
+  mirror_point?: Vec3f
   xform?: Mat4f
 }
 
@@ -627,30 +651,6 @@ export function TransformTwistCoords(
  * ----------------------------------------------------------------------------
  */
 
-/** Helper to generate the SDF for a Cylinder primitive. */
-export function CylinderPrimitive(
-  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
-  parameters: Omit<SampleBox_Parameters, "shape_type">,
-): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "Cylinder" })
-}
-
-/** Helper to generate the SDF for a Torus primitive. */
-export function TorusPrimitive(
-  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
-  parameters: Omit<SampleBox_Parameters, "shape_type">,
-): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "Torus" })
-}
-
-/** Helper to generate the SDF for a Link primitive. */
-export function LinkPrimitive(
-  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
-  parameters: Omit<SampleBox_Parameters, "shape_type">,
-): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "Link" })
-}
-
 /** Helper to generate the SDF for a Box primitive. */
 export function BoxPrimitive(
   points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
@@ -659,20 +659,12 @@ export function BoxPrimitive(
   return SampleBox(points, { ...parameters, shape_type: "Box" })
 }
 
-/** Helper to generate the SDF for a Ellipsoid primitive. */
-export function EllipsoidPrimitive(
+/** Helper to generate the SDF for a BoxFrame primitive. */
+export function BoxFramePrimitive(
   points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
   parameters: Omit<SampleBox_Parameters, "shape_type">,
 ): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "Ellipsoid" })
-}
-
-/** Helper to generate the SDF for a Plane primitive. */
-export function PlanePrimitive(
-  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
-  parameters: Omit<SampleBox_Parameters, "shape_type">,
-): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "Plane" })
+  return SampleBox(points, { ...parameters, shape_type: "BoxFrame" })
 }
 
 /** Helper to generate the SDF for a CappedCone primitive. */
@@ -691,12 +683,55 @@ export function CapsulePrimitive(
   return SampleBox(points, { ...parameters, shape_type: "Capsule" })
 }
 
-/** Helper to generate the SDF for a BoxFrame primitive. */
-export function BoxFramePrimitive(
+/** Helper to generate the SDF for a Cylinder primitive. */
+export function CylinderPrimitive(
   points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
   parameters: Omit<SampleBox_Parameters, "shape_type">,
 ): TypedFunc<FuncType.Float> {
-  return SampleBox(points, { ...parameters, shape_type: "BoxFrame" })
+  return SampleBox(points, { ...parameters, shape_type: "Cylinder" })
+}
+
+/** Helper to generate the SDF for a Ellipsoid primitive. */
+export function EllipsoidPrimitive(
+  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
+  parameters: Omit<SampleBox_Parameters, "shape_type">,
+): TypedFunc<FuncType.Float> {
+  return SampleBox(points, { ...parameters, shape_type: "Ellipsoid" })
+}
+
+/** Helper to generate the SDF for a Link primitive. */
+export function LinkPrimitive(
+  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
+  parameters: Omit<SampleBox_Parameters, "shape_type">,
+): TypedFunc<FuncType.Float> {
+  return SampleBox(points, { ...parameters, shape_type: "Link" })
+}
+
+/** Helper to generate the SDF for a Plane primitive. */
+export function PlanePrimitive(
+  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
+  parameters: Omit<SampleBox_Parameters, "shape_type">,
+): TypedFunc<FuncType.Float> {
+  return SampleBox(points, { ...parameters, shape_type: "Plane" })
+}
+
+/** Helper to generate the SDF for a Torus primitive. */
+export function TorusPrimitive(
+  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
+  parameters: Omit<SampleBox_Parameters, "shape_type">,
+): TypedFunc<FuncType.Float> {
+  return SampleBox(points, { ...parameters, shape_type: "Torus" })
+}
+
+/** Helper to intersect two SDFs. */
+export function CSGIntersect(
+  a: TypedFunc<FuncType.Float>,
+  b: TypedFunc<FuncType.Float>,
+  smoothing?: number,
+): TypedFunc<FuncType.Float> {
+  const params: CSG_Parameters = { operation: "Intersect" }
+  if (smoothing) { params.smoothing = smoothing }
+  return CSG(a, b, params)
 }
 
 /** Helper to subtract two SDFs. */
@@ -717,17 +752,6 @@ export function CSGUnion(
   smoothing?: number,
 ): TypedFunc<FuncType.Float> {
   const params: CSG_Parameters = { operation: "Union" }
-  if (smoothing) { params.smoothing = smoothing }
-  return CSG(a, b, params)
-}
-
-/** Helper to intersect two SDFs. */
-export function CSGIntersect(
-  a: TypedFunc<FuncType.Float>,
-  b: TypedFunc<FuncType.Float>,
-  smoothing?: number,
-): TypedFunc<FuncType.Float> {
-  const params: CSG_Parameters = { operation: "Intersect" }
   if (smoothing) { params.smoothing = smoothing }
   return CSG(a, b, params)
 }
