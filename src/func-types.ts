@@ -67,6 +67,7 @@ export type CustomShapeAsset = Asset & {
 export type ParametrizationAsset = Asset
 export type LineNetworkAsset = Asset
 export type LineNetworkBvhAsset = Asset
+export type MeshBvhAsset = Asset
 
 export type Graph = {
   operators: {
