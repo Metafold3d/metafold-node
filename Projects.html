@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Assets - Documentation</title>
+    <title>Projects - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,7 +29,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Assets</h1>
+    <h1 class="page-title">Projects</h1>
     
 
     
@@ -42,10 +42,10 @@
 <header>
     
         <h2>
-        Assets
+        Projects
         </h2>
         
-            <div class="class-description">Metafold assets endpoint.</div>
+            <div class="class-description">Metafold projects endpoint.</div>
         
     
 </header>
@@ -60,7 +60,7 @@
     <h2>Constructor</h2>
     
 
-    <h4 class="name" id="Assets"><span class="type-signature"></span>new Assets<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Projects"><span class="type-signature"></span>new Projects<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -99,7 +99,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="resources_Assets.js.html">resources/Assets.js</a>, <a href="resources_Assets.js.html#line11">line 11</a>
+        <a href="resources_Projects.js.html">resources/Projects.js</a>, <a href="resources_Projects.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -144,7 +144,7 @@
         <h3 class="subsection-title">Classes</h3>
 
         <dl>
-            <dt><a href="Assets.html">Assets</a></dt>
+            <dt><a href="Projects.html">Projects</a></dt>
             <dd></dd>
         </dl>
     
@@ -164,14 +164,14 @@
 
     
 
-    <h4 class="name" id="create"><span class="type-signature">(async) </span>create<span class="signature">(data, filename<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="create"><span class="type-signature">(async) </span>create<span class="signature">(name, access<span class="signature-attributes">opt</span>, data<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Upload an asset.
+    Create a project.
 </div>
 
 
@@ -207,7 +207,254 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="resources_Assets.js.html">resources/Assets.js</a>, <a href="resources_Assets.js.html#line77">line 77</a>
+        <a href="resources_Projects.js.html">resources/Projects.js</a>, <a href="resources_Projects.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>string</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">
+                Name of the project.
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>access</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>string</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    private
+                
+                </td>
+            
+
+            <td class="description last">
+                Project access. By default projects are private.
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">
+                Optional project data. This parameter accepts arbitrary
+  JSON-serializable data. Helpful for tracking application state.
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+
+<div class="param-desc">
+    Project resource.
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="delete"><span class="type-signature">(async) </span>delete<span class="signature">(id<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Delete a project.
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="resources_Projects.js.html">resources/Projects.js</a>, <a href="resources_Projects.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
@@ -253,41 +500,7 @@
 
         <tr>
             
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>any</code></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">
-                Asset data to upload, typically a File or Blob.
-                
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>filename</code></td>
+                <td class="name"><code>id</code></td>
             
 
             <td class="type">
@@ -314,7 +527,7 @@
             
 
             <td class="description last">
-                Name of the file.
+                Override ID of project to delete. Defaults to client project ID.
                 
             </td>
         </tr>
@@ -336,19 +549,6 @@
 
 
 
-<div class="section-returns">
-<h5>Returns:</h5>
-
-        
-
-
-<div class="param-desc">
-    Asset resource.
-</div>
-
-    
-</div>
-
 
 
 </div>
@@ -358,14 +558,14 @@
 
     
 
-    <h4 class="name" id="delete"><span class="type-signature">(async) </span>delete<span class="signature">(id)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="duplicate"><span class="type-signature">(async) </span>duplicate<span class="signature">(id, name, access<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Delete an asset.
+    Duplicate a project.
 </div>
 
 
@@ -401,142 +601,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="resources_Assets.js.html">resources/Assets.js</a>, <a href="resources_Assets.js.html#line113">line 113</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>string</code></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                ID of asset to delete.
-                
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-        
-            
-<div class="section-method">
-
-    
-
-    <h4 class="name" id="download"><span class="type-signature">(async) </span>download<span class="signature">(id, responseType<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Download an asset.
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="resources_Assets.js.html">resources/Assets.js</a>, <a href="resources_Assets.js.html#line51">line 51</a>
+        <a href="resources_Projects.js.html">resources/Projects.js</a>, <a href="resources_Projects.js.html#line64">line 64</a>
     </li></ul></dd>
     
 
@@ -613,7 +678,7 @@
             
 
             <td class="description last">
-                ID of asset to download.
+                Project to duplicate.
                 
             </td>
         </tr>
@@ -622,7 +687,45 @@
 
         <tr>
             
-                <td class="name"><code>responseType</code></td>
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>string</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">
+                New project name.
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>access</code></td>
             
 
             <td class="type">
@@ -649,15 +752,13 @@
             
                 <td class="default">
                 
-                    "stream"
+                    private
                 
                 </td>
             
 
             <td class="description last">
-                Type of response data.
-  Options include: "arraybuffer", "document", "json", "text", or "stream".
-  See <a href="https://axios-http.com/docs/req_config">Axios docs</a> for details.
+                New project access. By default projects are private.
                 
             </td>
         </tr>
@@ -686,7 +787,7 @@
 
 
 <div class="param-desc">
-    Response object with asset data.
+    Project resource.
 </div>
 
     
@@ -701,14 +802,14 @@
 
     
 
-    <h4 class="name" id="downloadURL"><span class="type-signature">(async) </span>downloadURL<span class="signature">(id, params<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="get"><span class="type-signature">(async) </span>get<span class="signature">(id<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Retrieve public asset download URL.
+    Get a project.
 </div>
 
 
@@ -744,7 +845,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="resources_Assets.js.html">resources/Assets.js</a>, <a href="resources_Assets.js.html#line64">line 64</a>
+        <a href="resources_Projects.js.html">resources/Projects.js</a>, <a href="resources_Projects.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -805,40 +906,6 @@
             
                 <td class="attributes">
                 
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">
-                ID of asset to download.
-                
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>Object</code></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
                     &lt;optional><br>
                 
 
@@ -851,230 +918,7 @@
             
 
             <td class="description last">
-                Optional download parameters.
-                
-                    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filename</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>string</code></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">
-                Filename of downloaded file.
-                
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-                
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="section-returns">
-<h5>Returns:</h5>
-
-        
-
-<dl class="param-type">
-    <dt>
-        Type:
-    </dt>
-    <dd>
-        
-<span class="param-type"><code>string</code></span>
-
-
-    </dd>
-</dl>
-
-
-<div class="param-desc">
-    Asset download URL. Note the URL is only valid from one hour of generation.
-</div>
-
-    
-</div>
-
-
-
-</div>
-        
-            
-<div class="section-method">
-
-    
-
-    <h4 class="name" id="get"><span class="type-signature">(async) </span>get<span class="signature">(id)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Get an asset.
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="resources_Assets.js.html">resources/Assets.js</a>, <a href="resources_Assets.js.html#line37">line 37</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>string</code></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                ID of asset to get.
+                Override ID of project to get. Defaults to client project ID.
                 
             </td>
         </tr>
@@ -1103,7 +947,7 @@
 
 
 <div class="param-desc">
-    Asset resource.
+    Project resource.
 </div>
 
     
@@ -1125,7 +969,7 @@
 
 
 <div class="description">
-    List assets.
+    List projects.
 </div>
 
 
@@ -1161,7 +1005,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="resources_Assets.js.html">resources/Assets.js</a>, <a href="resources_Assets.js.html#line26">line 26</a>
+        <a href="resources_Projects.js.html">resources/Projects.js</a>, <a href="resources_Projects.js.html#line25">line 25</a>
     </li></ul></dd>
     
 
@@ -1290,7 +1134,7 @@
 
             <td class="description last">
                 Sort string. For details on syntax see the Metafold API docs.
-  Supported sorting fields are: "id", "filename", "size", "created", or "modified".
+  Supported sorting fields are: "id", "user", "name", "created", or "modified".
                 
             </td>
         </tr>
@@ -1327,7 +1171,7 @@
 
             <td class="description last">
                 Query string. For details on syntax see the Metafold API docs.
-  Supported search fields are: "id" and "filename".
+  Supported search fields are: "id", "user", and "name".
                 
             </td>
         </tr>
@@ -1364,7 +1208,7 @@
 
 
 <div class="param-desc">
-    List of asset resources.
+    List of project resources.
 </div>
 
     
@@ -1379,14 +1223,14 @@
 
     
 
-    <h4 class="name" id="update"><span class="type-signature">(async) </span>update<span class="signature">(id, data, filename<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="update"><span class="type-signature">(async) </span>update<span class="signature">(id<span class="signature-attributes">opt</span>, params<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Update an asset.
+    Update a project.
 </div>
 
 
@@ -1422,7 +1266,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="resources_Assets.js.html">resources/Assets.js</a>, <a href="resources_Assets.js.html#line97">line 97</a>
+        <a href="resources_Projects.js.html">resources/Projects.js</a>, <a href="resources_Projects.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -1483,6 +1327,8 @@
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
 
@@ -1493,7 +1339,7 @@
             
 
             <td class="description last">
-                ID of asset to update.
+                Override ID of project to update. Defaults to client project ID.
                 
             </td>
         </tr>
@@ -1502,13 +1348,13 @@
 
         <tr>
             
-                <td class="name"><code>data</code></td>
+                <td class="name"><code>params</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><code>any</code></span>
+<span class="param-type"><code>Object</code></span>
 
 
             
@@ -1517,6 +1363,8 @@
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
 
@@ -1527,16 +1375,35 @@
             
 
             <td class="description last">
-                Asset data to upload, typically a File or Blob.
+                Optional update parameters.
                 
-            </td>
-        </tr>
+                    
 
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>filename</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
@@ -1563,7 +1430,124 @@
             
 
             <td class="description last">
-                Name of the file.
+                Optional project name.
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>access</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>string</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                Optional project access.
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                Optional project data. This parameter accepts arbitrary
+  JSON-serializable data. Helpful for tracking application state.
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>graph</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                Optional shape JSON.
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
                 
             </td>
         </tr>
@@ -1592,7 +1576,7 @@
 
 
 <div class="param-desc">
-    Asset resource.
+    Updated project resource.
 </div>
 
     
