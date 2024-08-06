@@ -146,9 +146,10 @@ export class Jobs {
    *
    * @param {string} url - Job status url.
    * @param {number} [timeout=12000] - Time in seconds to wait for a result.
-   * @returns Completed job resource.
+   * @param {number} [every=1] - Frequency in seconds.
+   * @returns HTTP response.
    */
-  poll(url: string, timeout: number = 1000 * 60 * 2): AxiosPromise {
+  poll(url: string, timeout: number = 1000 * 60 * 2, every: number = 1): AxiosPromise {
     return new Promise((resolve, reject) => {
       /* eslint-disable prefer-const */
       let intervalID: Timeout
@@ -173,7 +174,7 @@ export class Jobs {
             clearTimers()
             reject(e)
           })
-      }, 1000)
+      }, 1000 * every)
 
       timeoutID = setTimeout(() => {
         clearInterval(intervalID)
