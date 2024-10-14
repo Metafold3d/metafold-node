@@ -1,6 +1,6 @@
 {
   "name": "metafold",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Metafold SDK for Node.js",
   "main": "lib/metafold.js",
   "type": "module",
@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@types/three": "^0.164.0",
+    "auth0": "^4.10.0",
     "axios": "^1.6.7"
   }
 }
