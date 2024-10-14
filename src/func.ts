@@ -405,6 +405,30 @@ export function SampleLattice(
   )
 }
 
+/** Optional parameters for the SampleSpinodoid operator. */
+export interface SampleSpinodoid_Parameters {
+  angles?: Vec3f
+  density?: number
+  wave_count?: number
+  xform?: Mat4f
+}
+
+/** Compose function call to SampleSpinodoid. */
+export function SampleSpinodoid(
+  points: TypedFunc<FuncType.Vec3f> = POINT_SOURCE,
+  parameters?: SampleSpinodoid_Parameters,
+): TypedFunc<FuncType.Float> {
+  return new TypedFunc<FuncType.Float>(
+    "SampleSpinodoid",
+    {
+      "Points": points,
+    },
+    undefined,
+    parameters,
+    FuncType.Float,
+  )
+}
+
 /** Enum variants for SampleSurfaceLattice.lattice_type. */
 export type SampleSurfaceLattice_Enum_lattice_type = "CD" | "CI2Y" | "CP" | "CPM_Y" | "CS" | "CY" | "C_Y" | "D" | "F" | "FRD" | "Gyroid" | "I2Y" | "IWP" | "None" | "P" | "PM_Y" | "S" | "SD1" | "Schwarz" | "SchwarzD" | "SchwarzN" | "SchwarzPW" | "SchwarzW" | "W" | "Y"
 
