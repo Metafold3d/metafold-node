@@ -409,6 +409,7 @@ export function SampleLattice(
 export interface SampleSpinodoid_Parameters {
   angles?: Vec3f
   density?: number
+  pore_size?: number
   wave_count?: number
   xform?: Mat4f
 }
