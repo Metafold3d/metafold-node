@@ -43,7 +43,11 @@ class MetafoldClient implements Client {
    * @param {string} [projectID] - ID of the project to make API calls against.
    * @param {string} [baseURL] - Metafold API URL. Used for internal testing.
    */
-  constructor(accessToken: string, public projectID?: string, baseURL: string = DEFAULT_BASE_URL) {
+  constructor(
+    accessToken: string,
+    public projectID?: string,
+    baseURL: string = DEFAULT_BASE_URL,
+  ) {
     this.axios = axios.create({
       baseURL,
       headers: {

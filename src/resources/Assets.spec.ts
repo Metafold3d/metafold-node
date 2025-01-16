@@ -169,22 +169,6 @@ describe("Assets", function() {
     })
   })
 
-  describe("#update()", function() {
-    it("should upload and update asset 1", async function() {
-      const data = fs.readFileSync("test/test.png")
-      const file = new Blob([data], { type: "image/png" })
-      const asset = await metafold.assets.update("1", file, "test.png")
-      assert.deepEqual(asset, {
-        id: "1",
-        filename: "test.png",
-        size: 67,
-        checksum: "sha256:089ad5bf4831b6758e9907db43bc5ebba2e9248a9929dad6132c49932e538278",
-        created: defaultDate,
-        modified: defaultDate,
-      })
-    })
-  })
-
   describe("#delete()", function() {
     it("should delete asset 1", async function() {
       const scope = nock("https://api.metafold3d.com")

@@ -35,7 +35,6 @@ const jobList: JobJSON[] = [
     },
     "created": "Mon, 01 Jan 2024 00:00:00 GMT",
     "state": "success",
-    "assets": [assetJSON],
     "meta": null,
   },
   {
@@ -47,7 +46,6 @@ const jobList: JobJSON[] = [
     },
     "created": "Mon, 01 Jan 2024 00:00:00 GMT",
     "state": "success",
-    "assets": [assetJSON],
     "meta": null,
   },
   {
@@ -59,7 +57,6 @@ const jobList: JobJSON[] = [
     },
     "created": "Mon, 01 Jan 2024 00:00:00 GMT",
     "state": "success",
-    "assets": [assetJSON],
     "meta": null,
   },
 ]
@@ -95,7 +92,10 @@ describe("Jobs", function() {
       .reply(200, jobList.slice().filter(
         (j: JobJSON) => j.name === "foo"))
     .get("/projects/1/jobs/1")
-      .reply(200, jobList[jobList.length - 1])
+      .reply(200, {
+        ...jobList[jobList.length - 1],
+        assets: [assetJSON]
+      })
     // Job success
     .post("/projects/1/jobs")
       .reply(202, {
@@ -126,6 +126,7 @@ describe("Jobs", function() {
       .reply(200, {
         ...jobList[jobList.length - 1],
         name: "baz",
+        assets: [assetJSON],
       })
 
   describe("#list()", function() {

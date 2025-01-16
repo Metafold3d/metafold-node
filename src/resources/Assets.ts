@@ -121,26 +121,6 @@ export class Assets {
   }
 
   /**
-   * Update an asset.
-   *
-   * @param {string} id - ID of asset to update.
-   * @param {any} data - Asset data to upload, typically a File or Blob.
-   * @param {string} [filename] - Name of the file.
-   * @returns Asset resource.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async update(id: string, data: any, filename?: string): Promise<Asset> {
-    const form = new FormData()
-    if (filename) {
-      form.append("file", data, filename)
-    } else {
-      form.append("file", data)
-    }
-    const r = await this.client.patch(`/projects/${this.client.projectID}/assets/${id}`, form)
-    return asset(r.data)
-  }
-
-  /**
    * Delete an asset.
    *
    * @param {string} id - ID of asset to delete.
