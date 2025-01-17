@@ -1,6 +1,6 @@
 {
   "name": "metafold",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Metafold SDK for Node.js",
   "main": "lib/metafold.js",
   "type": "module",
