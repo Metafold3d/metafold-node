@@ -57,6 +57,26 @@ export function CSG(
   )
 }
 
+/** Optional parameters for the ComputeCurvatures operator. */
+export interface ComputeCurvatures_Parameters {
+}
+
+/** Compose function call to ComputeCurvatures. */
+export function ComputeCurvatures(
+  samples: Func,
+  parameters?: ComputeCurvatures_Parameters,
+): TypedFunc<FuncType.Vec3f> {
+  return new TypedFunc<FuncType.Vec3f>(
+    "ComputeCurvatures",
+    {
+      "Samples": samples,
+    },
+    undefined,
+    parameters,
+    FuncType.Vec3f,
+  )
+}
+
 /** Optional parameters for the ComputeNormals operator. */
 export interface ComputeNormals_Parameters {
   volume_offset?: Vec3f
