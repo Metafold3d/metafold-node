@@ -13,6 +13,8 @@ const assetJSON: AssetJSON = {
   checksum: "sha256:6310a5951d58eb3e0fdd8c8767c606615552899e65019cb1582508a7c7bfec39",
   created: "Mon, 01 Jan 2024 00:00:00 GMT",
   modified: "Mon, 01 Jan 2024 00:00:00 GMT",
+  project_id: "1",
+  job_id: null,
 }
 
 const asset: Asset = {
@@ -22,6 +24,13 @@ const asset: Asset = {
   checksum: "sha256:6310a5951d58eb3e0fdd8c8767c606615552899e65019cb1582508a7c7bfec39",
   created: defaultDate,
   modified: defaultDate,
+  project_id: "1",
+  job_id: null,
+}
+
+const defaultParams = {
+  "foo": "...",
+  "bar": "...",
 }
 
 // Default sort order is descending by id
@@ -30,33 +39,69 @@ const jobList: JobJSON[] = [
     "id": "3",
     "name": "bar",
     "type": "evaluate_graph",
+    "created": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "started": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "finished": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "error": null,
+    "state": "success",
+    "inputs": {
+      "params": defaultParams,
+    },
+    "outputs": {
+      "params": null,
+    },
+    "needs": [],
+    "project_id": "1",
+    "workflow_id": null,
     "parameters": {
       "graph": null,
     },
-    "created": "Mon, 01 Jan 2024 00:00:00 GMT",
-    "state": "success",
     "meta": null,
   },
   {
     "id": "2",
     "name": "foo",
     "type": "evaluate_graph",
+    "created": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "started": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "finished": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "error": null,
+    "state": "success",
+    "inputs": {
+      "params": defaultParams,
+    },
+    "outputs": {
+      "params": null,
+    },
+    "needs": [],
+    "project_id": "1",
+    "workflow_id": null,
     "parameters": {
       "graph": null,
     },
-    "created": "Mon, 01 Jan 2024 00:00:00 GMT",
-    "state": "success",
     "meta": null,
   },
   {
     "id": "1",
     "name": "foo",
     "type": "evaluate_graph",
+    "created": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "started": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "finished": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "error": null,
+    "state": "success",
+    "inputs": {
+      "params": defaultParams,
+    },
+    "outputs": {
+      "params": null,
+    },
+    "needs": [],
+    "project_id": "1",
+    "workflow_id": null,
     "parameters": {
       "graph": null,
     },
-    "created": "Mon, 01 Jan 2024 00:00:00 GMT",
-    "state": "success",
     "meta": null,
   },
 ]
@@ -65,14 +110,30 @@ const newJob: JobJSON = {
   id: "1",
   name: "My Job",
   type: "test_job",
+  created: "Mon, 01 Jan 2024 00:00:00 GMT",
+  started: "Mon, 01 Jan 2024 00:00:00 GMT",
+  finished: "Mon, 01 Jan 2024 00:00:00 GMT",
+  error: null,
+  state: "pending",
+  inputs: {
+    params: {
+      foo: 1,
+      bar: "a",
+      baz: [2, "b"],
+    }
+  },
+  outputs: {
+    params: null,
+  },
+  needs: [],
+  project_id: "1",
+  workflow_id: null,
+  assets: [],
   parameters: {
     foo: 1,
     bar: "a",
     baz: [2, "b"],
   },
-  created: "Mon, 01 Jan 2024 00:00:00 GMT",
-  state: "pending",
-  assets: [],
   meta: null,
 }
 
@@ -153,13 +214,25 @@ describe("Jobs", function() {
         id: "1",
         name: "foo",
         type: "evaluate_graph",
+        created: defaultDate,
+        started: defaultDate,
+        finished: defaultDate,
+        error: null,
+        state: "success",
+        inputs: {
+          params: defaultParams,
+        },
+        outputs: {
+          params: null,
+        },
+        needs: [],
+        project_id: "1",
+        workflow_id: null,
+        assets: [asset],
         parameters: {
           graph: null,
         },
-        created: defaultDate,
-        state: "success",
-        assets: [asset],
-        "meta": null,
+        meta: null,
       })
     })
   })
@@ -178,11 +251,27 @@ describe("Jobs", function() {
         id: "1",
         name: "My Job",
         type: "test_job",
-        parameters: params,
         created: defaultDate,
+        started: defaultDate,
+        finished: defaultDate,
+        error: null,
         state: "success",
+        inputs: {
+          params: {
+            foo: 1,
+            bar: "a",
+            baz: [2, "b"],
+          }
+        },
+        outputs: {
+          params: null,
+        },
+        needs: [],
+        project_id: "1",
+        workflow_id: null,
         assets: [asset],
-        "meta": null,
+        parameters: params,
+        meta: null,
       })
     })
     it("should dispatch a job and throw an error on failure", async function() {

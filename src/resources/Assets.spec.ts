@@ -15,6 +15,8 @@ const assetList: AssetJSON[] = [
     "checksum": "sha256:b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c",
     "created": "Mon, 01 Jan 2024 00:00:00 GMT",
     "modified": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "project_id": "1",
+    "job_id": null,
   },
   {
     "id": "2",
@@ -23,6 +25,8 @@ const assetList: AssetJSON[] = [
     "checksum": "sha256:6310a5951d58eb3e0fdd8c8767c606615552899e65019cb1582508a7c7bfec39",
     "created": "Mon, 01 Jan 2024 00:00:00 GMT",
     "modified": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "project_id": "1",
+    "job_id": null,
   },
   {
     "id": "1",
@@ -31,6 +35,8 @@ const assetList: AssetJSON[] = [
     "checksum": "sha256:6310a5951d58eb3e0fdd8c8767c606615552899e65019cb1582508a7c7bfec39",
     "created": "Mon, 01 Jan 2024 00:00:00 GMT",
     "modified": "Mon, 01 Jan 2024 00:00:00 GMT",
+    "project_id": "1",
+    "job_id": null,
   },
 ]
 
@@ -41,6 +47,8 @@ const asset1: AssetJSON = {
   checksum: "sha256:6310a5951d58eb3e0fdd8c8767c606615552899e65019cb1582508a7c7bfec39",
   created: "Mon, 01 Jan 2024 00:00:00 GMT",
   modified: "Mon, 01 Jan 2024 00:00:00 GMT",
+  project_id: "1",
+  job_id: null,
 }
 
 const newAsset: AssetJSON = {
@@ -50,6 +58,8 @@ const newAsset: AssetJSON = {
   checksum: "sha256:089ad5bf4831b6758e9907db43bc5ebba2e9248a9929dad6132c49932e538278",
   created: "Mon, 01 Jan 2024 00:00:00 GMT",
   modified: "Mon, 01 Jan 2024 00:00:00 GMT",
+  project_id: "1",
+  job_id: null,
 }
 
 describe("Assets", function() {
@@ -124,6 +134,8 @@ describe("Assets", function() {
         checksum: "sha256:6310a5951d58eb3e0fdd8c8767c606615552899e65019cb1582508a7c7bfec39",
         created: defaultDate,
         modified: defaultDate,
+        project_id: "1",
+        job_id: null,
       })
     })
   })
@@ -165,6 +177,8 @@ describe("Assets", function() {
         checksum: "sha256:089ad5bf4831b6758e9907db43bc5ebba2e9248a9929dad6132c49932e538278",
         created: defaultDate,
         modified: defaultDate,
+        project_id: "1",
+        job_id: null,
       })
     })
   })

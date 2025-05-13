@@ -16,6 +16,10 @@ export type AssetJSON = {
   created: string
   /** Asset last modified (RFC 1123) datetime. */
   modified: string
+  /** Project ID. */
+  project_id: string
+  /** Source job ID. */
+  job_id: string | null
 }
 
 /** Asset resource. */
