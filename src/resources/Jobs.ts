@@ -4,11 +4,10 @@ import type { Client } from "../client.js"
 import { PollTimeout } from "../error.js"
 import { constructParams } from "../util.js"
 
-type Timeout = ReturnType<typeof setTimeout>
-
 export type JobState = "pending" | "started" | "success" | "failure" | "canceled"
 
 export type IOJSON = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: { [key: string]: any } | null
   assets?: { [key: string]: AssetJSON } | null
 }
@@ -84,6 +83,7 @@ function mapAsset(a: AssetJSON): Asset {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function* iterOwn(m: object): Generator<[string, any]> {
   for (const [k, v] of Object.entries(m)) {
     if (Object.hasOwn(m, k))
@@ -170,7 +170,7 @@ export class Jobs {
     const url = await this.runStatus(type, params, name);
     let r = null;
     try {
-      r = await this.poll(url, timeout)
+      r = await this.client.poll(url, timeout, 1)
     } catch (e) {
       if (e instanceof PollTimeout) {
         throw new Error(
@@ -184,6 +184,22 @@ export class Jobs {
     return job(r.data)
   }
 
+  /**
+   * Poll the given URL every one second.
+   *
+   * Helpful for waiting on job results given a status URL.
+   *
+   * @param {string} url - Workflow status url.
+   * @param {number} [timeout=12000] - Time in seconds to wait for a result.
+   * @param {number} [every=1] - Frequency in seconds.
+   * @returns HTTP response.
+   *
+   * @deprecated Use Client.poll instead.
+   */
+  poll(url: string, timeout: number = 1000 * 60 * 2, every: number = 1): AxiosPromise {
+    console.warn("Jobs.poll is deprecated, please use Client.poll instead")
+    return this.client.poll(url, timeout, every)
+  }
 
   /**
    * Dispatch a new job and return immediately without waiting for result.
@@ -203,50 +219,6 @@ export class Jobs {
       },
     )
     return r.data.link;
-  }
-
-  /**
-   * Poll the given URL every one second.
-   *
-   * Helpful for waiting on job results given a status URL.
-   *
-   * @param {string} url - Job status url.
-   * @param {number} [timeout=12000] - Time in seconds to wait for a result.
-   * @param {number} [every=1] - Frequency in seconds.
-   * @returns HTTP response.
-   */
-  poll(url: string, timeout: number = 1000 * 60 * 2, every: number = 1): AxiosPromise {
-    return new Promise((resolve, reject) => {
-      /* eslint-disable prefer-const */
-      let intervalID: Timeout
-      let timeoutID: Timeout
-      /* eslint-enable prefer-const */
-
-      const clearTimers = () => {
-        clearInterval(intervalID)
-        clearTimeout(timeoutID)
-      }
-
-      intervalID = setInterval(() => {
-        this.client.get(url)
-          .then((r: AxiosResponse) => {
-            if (r.status === 202) {
-              return
-            }
-            clearTimers()
-            resolve(r)
-          })
-          .catch((e) => {
-            clearTimers()
-            reject(e)
-          })
-      }, 1000 * every)
-
-      timeoutID = setTimeout(() => {
-        clearInterval(intervalID)
-        reject(new PollTimeout("Job timed out"))
-      }, timeout)
-    })
   }
 
   /**

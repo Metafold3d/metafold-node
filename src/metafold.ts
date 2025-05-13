@@ -1,11 +1,15 @@
 import axios from "axios"
-import type { AxiosInstance } from "axios"
+import type { AxiosInstance, AxiosPromise, AxiosResponse } from "axios"
 import type { Client } from "./client.js"
+import { PollTimeout } from "./error.js"
 import { Projects } from "./resources/Projects.js"
 import { Assets } from "./resources/Assets.js"
 import { Jobs } from "./resources/Jobs.js"
+import { Workflows } from "./resources/Workflows.js"
 
 const DEFAULT_BASE_URL = "https://api.metafold3d.com"
+
+type Timeout = ReturnType<typeof setTimeout>
 
 /** Metafold REST API client. */
 class MetafoldClient implements Client {
@@ -26,6 +30,12 @@ class MetafoldClient implements Client {
    * @type {Jobs}
    */
   jobs: Jobs
+
+  /**
+   * Endpoint for managing workflow resources.
+   * @type {Workflows}
+   */
+  workflows: Workflows
 
   /** Underlying HTTP client. */
   axios: AxiosInstance
@@ -87,6 +97,51 @@ class MetafoldClient implements Client {
     this.projects = new Projects(this)
     this.assets = new Assets(this)
     this.jobs = new Jobs(this)
+    this.workflows = new Workflows(this)
+  }
+
+  /**
+   * Poll the given URL every one second.
+   *
+   * Helpful for waiting on job results given a status URL.
+   *
+   * @param {string} url - Workflow status url.
+   * @param {number} [timeout=12000] - Time in seconds to wait for a result.
+   * @param {number} [every=1] - Frequency in seconds.
+   * @returns HTTP response.
+   */
+  poll(url: string, timeout: number = 1000 * 60 * 2, every: number = 1): AxiosPromise {
+    return new Promise((resolve, reject) => {
+      /* eslint-disable prefer-const */
+      let intervalID: Timeout
+      let timeoutID: Timeout
+      /* eslint-enable prefer-const */
+
+      const clearTimers = () => {
+        clearInterval(intervalID)
+        clearTimeout(timeoutID)
+      }
+
+      intervalID = setInterval(() => {
+        this.get(url)
+          .then((r: AxiosResponse) => {
+            if (r.status === 202) {
+              return
+            }
+            clearTimers()
+            resolve(r)
+          })
+          .catch((e) => {
+            clearTimers()
+            reject(e)
+          })
+      }, 1000 * every)
+
+      timeoutID = setTimeout(() => {
+        clearInterval(intervalID)
+        reject(new PollTimeout("Polling timed out"))
+      }, timeout)
+    })
   }
 }
 export default MetafoldClient

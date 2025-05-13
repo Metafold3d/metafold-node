@@ -1,4 +1,4 @@
-import type { AxiosInstance } from "axios"
+import type { AxiosInstance, AxiosPromise } from "axios"
 
 export interface Client {
   projectID?: string
@@ -8,4 +8,6 @@ export interface Client {
   post: AxiosInstance["post"]
   patch: AxiosInstance["patch"]
   delete: AxiosInstance["delete"]
+
+  poll: (url: string, timeout: number, every: number) => AxiosPromise
 }
