@@ -41,7 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "commander": "^12.0.0",
-    "esbuild": "^0.20.1",
+    "esbuild": "^0.25.0",
     "eslint": "^8.56.0",
     "jsdoc": "^4.0.2",
     "minami": "^1.2.3",
