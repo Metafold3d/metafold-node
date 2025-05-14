@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>resources/Projects.js - Documentation</title>
+    <title>resources/Workflows.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,7 +29,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">resources/Projects.js</h1>
+    <h1 class="page-title">resources/Workflows.js</h1>
     
 
     
@@ -39,102 +39,92 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { constructParams } from "../util.js";
-function project(p) {
+            <pre class="prettyprint source linenums"><code>import { PollTimeout } from "../error.js";
+import { constructParams } from "../util.js";
+function workflow(w) {
     return {
-        ...p,
-        created: new Date(p.created),
-        modified: new Date(p.modified),
+        ...w,
+        created: new Date(w.created),
+        started: w.started ? new Date(w.started) : null,
+        finished: w.finished ? new Date(w.finished) : null,
     };
 }
-/** Metafold projects endpoint. */
-export class Projects {
+/** Metafold workflows endpoint. */
+export class Workflows {
     client;
     constructor(client) {
         this.client = client;
     }
     /**
-     * List projects.
+     * List workflows.
      *
      * @param {Object} [params] - Optional list parameters.
      * @param {string} [params.sort] - Sort string. For details on syntax see the Metafold API docs.
-     *   Supported sorting fields are: "id", "user", "name", "created", or "modified".
+     *   Supported sorting fields are: "id", "created", "started", or "finished".
      * @param {string} [params.q] - Query string. For details on syntax see the Metafold API docs.
-     *   Supported search fields are: "id", "user", and "name".
-     * @returns List of project resources.
+     *   Supported search fields are: "id" and "state".
+     * @returns List of workflow resources.
      */
     async list({ sort, q } = {}) {
         const params = constructParams({ sort, q });
-        const r = await this.client.get(`/projects`, { params });
-        return r.data.map(project);
+        const r = await this.client.get(`/projects/${this.client.projectID}/workflows`, { params });
+        return r.data.map(workflow);
     }
     /**
-     * Get a project.
+     * Get a workflow.
      *
-     * @param {string} [id] - Override ID of project to get. Defaults to client project ID.
-     * @returns Project resource.
+     * @param {string} id - ID of workflow to get.
+     * @returns Workflow resource.
      */
     async get(id) {
-        const r = await this.client.get(`/projects/${id ?? this.client.projectID}`);
-        return project(r.data);
+        const r = await this.client.get(`/projects/${this.client.projectID}/workflows/${id}`);
+        return workflow(r.data);
     }
     /**
-     * Create a project.
+     * Dispatch a new workflow and wait for the result.
      *
-     * @param {string} name - Name of the project.
-     * @param {string} [access] - Project access. By default projects are private.
-     * @param {Object} [data] - Optional project data. This parameter accepts arbitrary
-     *   JSON-serializable data. Helpful for tracking application state.
-     * @returns Project resource.
+     * @param {string} definition - Workflow definition encoded as YAML.
+     * @param {Object} [params] - Workflow parameters.
+     * @param {Object} [assets] - Workflow assets.
+     * @param {number} [timeout=12000] - Time in seconds to wait for a result.
+     * @returns Completed workflow resource.
      */
-    async create(name, access = "private", data) {
-        const payload = constructParams({ name, access, project: data });
-        const r = await this.client.post(`/projects`, payload, {
+    async run(definition, params, assets, timeout = 1000 * 60 * 2) {
+        const data = constructParams({ definition, assets, parameters: params });
+        let r = await this.client.post(`/projects/${this.client.projectID}/workflows`, data, {
             headers: { "Content-Type": "application/json" },
         });
-        return project(r.data);
+        const url = r.data.link;
+        try {
+            r = await this.client.poll(url, timeout, 2);
+        }
+        catch (e) {
+            if (e instanceof PollTimeout) {
+                throw new Error(`Workflow failed to complete within ${timeout} ms`, { cause: e });
+            }
+            else {
+                throw e;
+            }
+        }
+        return workflow(r.data);
     }
     /**
-     * Duplicate a project.
+     * Cancel a running workflow.
      *
-     * @param {string} id - Project to duplicate.
-     * @param {string} name - New project name.
-     * @param {string} [access] - New project access. By default projects are private.
-     * @returns Project resource.
+     * @param {string} id - ID of workflow to canel.
+     * @returns Workflow resource.
      */
-    async duplicate(id, name, access = "private") {
-        const payload = constructParams({ source: id, name, access });
-        const r = await this.client.post(`/projects`, payload, {
-            headers: { "Content-Type": "application/json" },
-        });
-        return project(r.data);
+    async cancel(id) {
+        const r = await this.client.post(`/projects/${this.client.projectID}/workflows/${id}/cancel`);
+        return workflow(r.data);
     }
     /**
-     * Update a project.
+     * Delete a workflow.
      *
-     * @param {string} [id] - Override ID of project to update. Defaults to client project ID.
-     * @param {Object} [params] - Optional update parameters.
-     * @param {string} [params.name] - Optional project name.
-     * @param {string} [params.access] - Optional project access.
-     * @param {Object} [params.data] - Optional project data. This parameter accepts arbitrary
-     *   JSON-serializable data. Helpful for tracking application state.
-     * @param {Object} [params.graph] - Optional shape JSON.
-     * @returns Updated project resource.
-     */
-    async update(id, { name, access, data, graph } = {}) {
-        const payload = constructParams({ name, access, project: data, graph });
-        const r = await this.client.patch(`/projects/${id ?? this.client.projectID}`, payload, {
-            headers: { "Content-Type": "application/json" },
-        });
-        return project(r.data);
-    }
-    /**
-     * Delete a project.
-     *
-     * @param {string} [id] - Override ID of project to delete. Defaults to client project ID.
+     * @param {string} id - ID of workflow to delete.
      */
     async delete(id) {
-        await this.client.delete(`/projects/${id ?? this.client.projectID}`);
+        await this.client.delete(`/projects/${this.client.projectID}/workflows/${id}`);
     }
 }
 </code></pre>
