@@ -167,7 +167,7 @@ export class Jobs {
     name?: string,
     timeout: number = 1000 * 60 * 2, // 2 mins
   ): Promise<Job> {
-    const url = await this.runStatus(type, params, name);
+    const { link: url } = await this.runStatus(type, params, name);
     let r = null;
     try {
       r = await this.client.poll(url, timeout, 1)
@@ -209,16 +209,18 @@ export class Jobs {
    * @param {string} type - Job type.
    * @param {Object} params - Job parameters.
    * @param {string} [name] - Job name.
-   * @returns {string} Job status url.
+   * @returns Job resource ID and status url.
    */
-  async runStatus(type: string, params: object, name?: string): Promise<string> {
+  async runStatus(
+    type: string, params: object, name?: string,
+  ): Promise<{ id: string; link: string; }> {
     const data = constructParams({ type, parameters: params, name })
     const r: AxiosResponse = await this.client.post(
       `/projects/${this.client.projectID}/jobs`, data, {
         headers: { "Content-Type": "application/json" },
       },
     )
-    return r.data.link;
+    return { id: r.data.id, link: r.data.link };
   }
 
   /**
